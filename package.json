@@ -1,0 +1,9 @@
+{
+  "name": "server",
+  "proxy": "http://localhost:8000",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Adrian-Vaktor/Final-Project-ScreenSpill.git",
+  "author": "Adrian-Vaktor <info@adrianvaktor.com>",
+  "license": "MIT"
+}
