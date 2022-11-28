@@ -4,9 +4,6 @@ import LoginButton from '../Misc/LoginButton'
 import LogoutButton from '../Misc/LogoutButton'
 
 
-//connection to AUTH0
-
-
 const SignIn_Page = () => {
 
     return (

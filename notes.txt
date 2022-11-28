@@ -1,6 +1,25 @@
 
-Features:
+//IF THINGS START BREAKING _ LOOK AT THE AUTH0 SUB FROM THE CLIET FOR LOGIN
+
+
+https://draftjs.org/
+https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/
+https://pspdfkit.com/blog/2022/how-to-convert-html-to-pdf-using-react/
 
 
 
-    
+backend hosting
+https://www.youtube.com/watch?v=MusIvEKjqsc
+
+
+Deployment:
+https://medium.com/@skumar.saurabh/building-server-less-web-application-using-aws-amplify-c25aaff3cf82
+
+
+
+AWS amplify - frontend
+Heroku - backend + DB
+
+(if CORS errors)
+Backend CORS settings- allow request from the frontend domain
+

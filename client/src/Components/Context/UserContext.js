@@ -2,43 +2,60 @@ import { createContext, useReducer } from "react";
 
 export const UserContext = createContext();
 
-const intitialState = {};
-const reducer = (state = intitialState, action) => {
+
+
+//-------------------------- Reducer 
+
+// Init data struct
+const intitialState = {
+  userLoginInfo: {}, //AUTH0 - Login AUTH0 info
+  userInfo: {}, //MONGO - Info related to the website's profile of the user
+  userProjects: [], //MONGO - projects fetched for the user
+};
+
+// Reducer
+const reducer = (state, action) => {
     switch (action.type) {
 
-      // Example
-      case "example": {
-        return (
-            { ...intitialState}
-        );
+      // setUser
+      case "setUser": { 
+        let tempState = {...state}
+        tempState.userLoginInfo = action.data
+
+        return tempState
       }  
+
       default:
         throw new Error(`Unrecognized action: ${action.type}`);
     }
   };
 
+
+//------------------------- Provider
+
 export const UserProvider = ({ children }) => {
-const [state, dispatch] = useReducer(reducer, intitialState);
+  const [state, dispatch] = useReducer(reducer, intitialState);
 
 
-// Example
-const example = (data) => {
-    dispatch({ type: "example", ...data });
-};
+  // Example
+  const setUser = (user) => {
+      dispatch({ type: "setUser", data: user });
+  };
 
-return (
-    <UserContext.Provider
-    value={
-        {
-        state,
-        action: { 
-            example
-            },
-        }
-    }
-    >
-    {children}
-    </UserContext.Provider>
-);
+
+  return (
+      <UserContext.Provider
+      value={
+          { state: { state },
+            action: { 
+              setUser,
+
+             },
+          }
+      }
+      >
+      {children}
+      </UserContext.Provider>
+  );
 };
   

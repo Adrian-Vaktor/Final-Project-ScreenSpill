@@ -10,10 +10,10 @@ import Blog_Page from './Components/HomePages/Blog_Page';
 import BlogPost_Page from './Components/HomePages/BlogPost_Page';
 import About_Page from './Components/HomePages/About_Page';
 import SignIn_Page from './Components/HomePages/SignIn_Page';
-import ProjectManager_Page from './Components/UX/ProjectManager_Page';
-import ScreenWriter_Page from './Components/UX/ScreenWriter_Page';
-import Map_Page from './Components/UX/Map_Page';
-import Calendar_Page from './Components/UX/Calendar_Page';
+import ProjectManager_Page from './Components/UI/ProjectManager_Page';
+import ScreenWriter_Page from './Components/UI/ScreenWriter_Page';
+import Map_Page from './Components/UI/Map_Page';
+import Calendar_Page from './Components/UI/Calendar_Page';
 
 
 function App() {
@@ -29,11 +29,12 @@ function App() {
               <Route path='/about' element={<About_Page />} />
               <Route path='/signin' element={<SignIn_Page />} />
               <Route path='/ux/project-manager' element={<ProjectManager_Page />} />
+              <Route path='/ux/profile-setup' element={<ProjectManager_Page />} />
               <Route path='/ux/project/:projectName' element={<ScreenWriter_Page />} />
               <Route path='/ux/project/:projectName/map' element={<Map_Page />} />
               <Route path='/ux/project/:projectName/calendar' element={<Calendar_Page />} />
               <Route path='/ux/project/:projectName/contacts' element={<Calendar_Page />} />
-
+              <Route path="*" element={<>Not found</>} />
             </Routes>
           </Router>
         </UserProvider>
