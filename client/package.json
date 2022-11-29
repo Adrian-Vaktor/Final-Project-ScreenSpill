@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
+    "image-to-base64": "^2.2.0",
     "mapbox-gl": "^2.11.0",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
@@ -17,8 +18,8 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
-    "web-vitals": "^2.1.4",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "PORT=8000 react-scripts start",

@@ -1,27 +1,26 @@
 import styled from 'styled-components'
+
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from '../Misc/LogoutButton';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
+import UserSetup from '../Misc/UserSetup'
+import ModalBackdrop from '../Misc/ModalBackdrop'
 
 const ProjectManager_Page = () => {
 
+    const navigate = useNavigate()
+    const { user, isAuthenticated } = useAuth0()
     const { 
         state: { state },
         action: { setUser, createUser, setUserInfo, setProjects, createProject },
     } = useContext(UserContext)
 
-    const { user, isAuthenticated } = useAuth0()
-    const navigate = useNavigate()
-
-
     useEffect(()=> {
         console.log(state);
     }, [state])
     
-
-
     useEffect(() => {
         
         if(user, isAuthenticated){
@@ -54,12 +53,12 @@ const ProjectManager_Page = () => {
             data => data.json()
         ).then(res => console.log(res)
         )
-
     }
 
     return (
         <>
         {
+            //Check if user is logging in for the first time (no profile settings)
             state.userInfo === 'not-set' ?
             <>
                 no-data
@@ -67,13 +66,14 @@ const ProjectManager_Page = () => {
             :
             <>
                 {
+                    //If the 'set-up' flag in the state then bring up the setup component
                     state.userInfo === 'set-up' ?
                     <>
-                        set up window
+                        <UserSetup />
+                        <ModalBackdrop />
                         <button onClick={handleCreateUser}>
                             create user
                         </button>
-
                     </>
                     :
                     <>
