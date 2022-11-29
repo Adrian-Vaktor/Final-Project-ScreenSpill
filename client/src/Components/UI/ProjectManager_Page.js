@@ -49,8 +49,14 @@ const ProjectManager_Page = () => {
         createProject(tempProj)
     }
 
-    
-    
+    const handleGetProjects = () => {
+        fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
+            data => data.json()
+        ).then(res => console.log(res)
+        )
+
+    }
+
     return (
         <>
         {
@@ -74,7 +80,11 @@ const ProjectManager_Page = () => {
                     {state.userInfo.name}
                     <button onClick={handleCreateProject}>
                             create project
-                        </button>
+                    </button>
+
+                    <button onClick={handleGetProjects}>
+                            get projects
+                    </button>
                     </>
                 }
             </>

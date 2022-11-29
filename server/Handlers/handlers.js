@@ -68,7 +68,7 @@ const getProjects = async (req, res) => {
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
 
-        const userQueryObj = { ownderId: userId }
+        const userQueryObj = { userId: userId }
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Projects').find(userQueryObj).toArray()
@@ -125,6 +125,115 @@ const createProject = async (req, res) => {
     }
 } 
 
+
+
+////!!!!!!!!!!!!
+//// MAKE SURE THESE CHANGE THE USER OBJ AND THE PROJECT ITEM COLLECTIONS
+
+const deleteProject = async (req, res) => {
+    const projectId = req.params.projectId
+
+    try{
+
+        const client = new MongoClient(MONGO_URI, options)
+        await client.connect()
+
+        const db = client.db('ScreenSpill')
+        const result = await db.collection('Projects').deleteOne()
+        console.log(result);
+        
+        client.close()
+        
+        res.status(200).json({
+            status: 200,
+            message: 'project deleted',
+            data: result[0]
+        })
+
+    }catch(err){
+        console.log(err);
+        
+    }
+
+}
+
+const updateProject = async (req, res) => {
+    const projectId = req.params.projectId
+
+    try{
+        const client = new MongoClient(MONGO_URI, options)
+        await client.connect()
+
+        const db = client.db('ScreenSpill')
+        const result = await db.collection('Projects').updateOne()
+        console.log(result);
+        
+        client.close()
+        
+        res.status(200).json({
+            status: 200,
+            message: 'project updated',
+            data: result[0]
+        })
+
+    }catch(err){
+        console.log(err);
+        
+    }
+}
+
+
+const deleteUser = async (req, res) => {
+    const userId = req.params.userId
+    try{
+
+        const client = new MongoClient(MONGO_URI, options)
+        await client.connect()
+
+        const db = client.db('ScreenSpill')
+        const result = await db.collection('Users').deleteOne()
+        console.log(result);
+        
+        client.close()
+        
+        res.status(200).json({
+            status: 200,
+            message: 'project deleted',
+            data: result[0]
+        })
+
+    }catch(err){
+        console.log(err);
+        
+    }
+}
+
+const updateUser = async (req, res) => {
+    const userId = req.params.userId
+
+    try{
+        const client = new MongoClient(MONGO_URI, options)
+        await client.connect()
+
+        const db = client.db('ScreenSpill')
+        const result = await db.collection('Users').updateOne()
+        console.log(result);
+        
+        client.close()
+        
+        res.status(200).json({
+            status: 200,
+            message: 'project deleted',
+            data: result[0]
+        })
+
+    }catch(err){
+        console.log(err);
+        
+    }
+}
+
+
 //USERS
 // each user object/item has stored inside the various information on the user.
 // it holds refference to a project id that is then fetched from the projects collection 
@@ -134,11 +243,13 @@ const createProject = async (req, res) => {
 //enforcing schemas
 
 
-
-
 module.exports = {
     getUserInfo,
     createUserProfile,
     getProjects,
-    createProject
+    createProject,
+    deleteProject,
+    updateProject,
+    deleteUser,
+    updateUser
 };
