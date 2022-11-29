@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
-const Profile = () => {
+const ProfileSetup = () => {
     const { user, isAuthenticated } = useAuth0()
     console.log(user)
 
@@ -17,4 +17,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default ProfileSetup;

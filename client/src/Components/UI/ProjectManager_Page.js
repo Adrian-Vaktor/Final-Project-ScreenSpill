@@ -5,13 +5,11 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 
-
-
 const ProjectManager_Page = () => {
 
     const { 
         state: { state },
-        action: { setUser },
+        action: { setUser, createUser, setUserInfo, setProjects, createProject },
     } = useContext(UserContext)
 
     const { user, isAuthenticated } = useAuth0()
@@ -23,39 +21,64 @@ const ProjectManager_Page = () => {
     }, [state])
     
 
-    const fetchUserInfo = async () => {
-        try{
-            fetch(`/api/userProfile/${user.sub}`)
-            .then(res => res.json())
-            .then(data => {
-                if(data.data.length === 0){
-                    // navigate('/ux/profile-Setup')
-                }
-            }
-            )
-            
-        }catch(err){
-            return err
-        }
-    }
 
     useEffect(() => {
-        console.log((user, isAuthenticated));
-        console.log();
         
         if(user, isAuthenticated){
             setUser(user)
-
-            fetchUserInfo()
+            setProjects()
             // fetch('/api/hey').then(data => data.json).then(res => console.log(res))
-
         }
     },[user])
 
+    const handleCreateUser = () => {
+        const tempUser = {
+            name: 'Adrian',
+            style: 'Black Metal',
+            loginId: state.userLoginInfo.sub,
+            projects: [],
+        }
+        createUser(tempUser)
+    }
 
+    const handleCreateProject = () => {
+        const tempProj = {
+            name: 'the sparticus advneture',
+            genre: 'stupid'
+        }
+        createProject(tempProj)
+    }
+
+    
     
     return (
         <>
+        {
+            state.userInfo === 'not-set' ?
+            <>
+                no-data
+            </>
+            :
+            <>
+                {
+                    state.userInfo === 'set-up' ?
+                    <>
+                        set up window
+                        <button onClick={handleCreateUser}>
+                            create user
+                        </button>
+
+                    </>
+                    :
+                    <>
+                    {state.userInfo.name}
+                    <button onClick={handleCreateProject}>
+                            create project
+                        </button>
+                    </>
+                }
+            </>
+        }
         <LogoutButton></LogoutButton>
             {
                 <article className='column'>

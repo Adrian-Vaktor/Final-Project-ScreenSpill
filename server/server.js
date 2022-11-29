@@ -5,7 +5,10 @@ const helmet = require('helmet');
 const PORT = 4000
 
 const {
-    getUserInfo
+    getUserInfo,
+    createUserProfile,
+    getProjects,
+    createProject
 } = require('./Handlers/handlers.js')
 console.log(getUserInfo);
 
@@ -16,16 +19,17 @@ express()
     .use(morgan('tiny'))
     .use(helmet())
 
-    //get userInfo 
+    //get userInfo '/api/createUserProfile'
     .get('/api/userProfile/:userLoginId', getUserInfo)
-    .get('/api/hey', (req, res) => {
-        res.send('hey')
-    })
+    .get('/api/getProjects/:userId', getProjects)
 
 
-    // .post('/api/sssss', (req, res) => {
-    //     res.json('Hello World!')
-    // })
+
+    .post('/api/createProject', createProject)
+    .post('/api/createUserProfile', createUserProfile)
+
+
+
 
     
 
