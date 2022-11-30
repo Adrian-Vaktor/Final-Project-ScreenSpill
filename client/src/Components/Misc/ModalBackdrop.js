@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ModalBackdrop = () => {
+const ModalBackdrop = ({ isOpen, setIsOpen }) => {
+
+    const handleClick = () => {
+        setIsOpen(!isOpen)
+    }
+
 
     return (
-        <ModalBackdrop_Wrapper></ModalBackdrop_Wrapper>
+        <ModalBackdrop_Wrapper onClick={handleClick}></ModalBackdrop_Wrapper>
     )
 }
 

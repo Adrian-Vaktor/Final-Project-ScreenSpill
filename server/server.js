@@ -38,14 +38,6 @@ express()
     .delete('/api/deleteProject/:projectId', deleteProject)
 
 
-
-
-
-
-
-
-    
-
     .listen(PORT, () => {
         console.log(`example app listening on port ${PORT}`)
     })

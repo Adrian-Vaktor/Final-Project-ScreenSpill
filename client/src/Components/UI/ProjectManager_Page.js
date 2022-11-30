@@ -2,11 +2,12 @@ import styled from 'styled-components'
 
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from '../Misc/LogoutButton';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 import UserSetup from '../Misc/UserSetup'
 import ModalBackdrop from '../Misc/ModalBackdrop'
+import ProjectSetup from '../Misc/ProjectSetup';
 
 const ProjectManager_Page = () => {
 
@@ -16,6 +17,8 @@ const ProjectManager_Page = () => {
         state: { state },
         action: { setUser, createUser, setUserInfo, setProjects, createProject },
     } = useContext(UserContext)
+
+    const [ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen ] = useState(false)
 
     useEffect(()=> {
         console.log(state);
@@ -41,11 +44,7 @@ const ProjectManager_Page = () => {
     }
 
     const handleCreateProject = () => {
-        const tempProj = {
-            name: 'the sparticus advneture',
-            genre: 'stupid'
-        }
-        createProject(tempProj)
+        setIsCreateNewProjectWindowOpen(true)
     }
 
     const handleGetProjects = () => {
@@ -77,14 +76,36 @@ const ProjectManager_Page = () => {
                     </>
                     :
                     <>
-                    {state.userInfo.name}
-                    <button onClick={handleCreateProject}>
-                            create project
-                    </button>
+                        {
+                            isCreateNewProjectWindowOpen
+                            ?
+                            <>
+                            <ProjectSetup 
+                                isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
+                                setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
+                            <ModalBackdrop 
+                                isOpen={isCreateNewProjectWindowOpen}
+                                setIsOpen={setIsCreateNewProjectWindowOpen}/>
+                            </>
+                            :
+                            <></>
+                        }
 
-                    <button onClick={handleGetProjects}>
-                            get projects
-                    </button>
+                        {state.userInfo.name}
+                        <button onClick={handleCreateProject}>
+                                create project
+                        </button>
+
+                        <button onClick={handleGetProjects}>
+                                get projects
+                        </button>
+
+
+
+
+
+
+
                     </>
                 }
             </>

@@ -22,7 +22,6 @@ const getUserInfo = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Users').find(userQueryObj).toArray()
-        console.log(result);
         
         client.close()
         
@@ -41,6 +40,7 @@ const getUserInfo = async (req, res) => {
 
 const createUserProfile = async (req, res) => {
     const newUserItem = req.body
+    newUserItem.userId = uuidv4()
     try{
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
@@ -54,7 +54,10 @@ const createUserProfile = async (req, res) => {
         res.status(200).json({
             status: 200,
             message: 'data',
-            data: result
+            data: { 
+                res: result,
+                loginId: newUserItem.loginId
+            }
         })
 
     }catch(err){
@@ -101,7 +104,7 @@ const createProject = async (req, res) => {
         const db = client.db('ScreenSpill')
         const result_ofInsert = await db.collection('Projects').insertOne(projectObj)
         const result_ofUpdate = await db.collection('Users').updateOne(
-            { loginId : projectObj.userId },
+            { loginId : projectObj.loginId },
             { $push:
                 {
                     projects : projectObj.projectId

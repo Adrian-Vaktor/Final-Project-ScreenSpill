@@ -1,6 +1,5 @@
 import { createContext, useReducer } from "react";
 
-
 export const UserContext = createContext();
 
 
@@ -55,6 +54,8 @@ export const UserProvider = ({ children }) => {
         fetch(`/api/userProfile/${userId}`)
         .then(res => res.json())
         .then(resData => {
+          console.log(resData);
+          
             if(!resData.data){
               setUserInfo('set-up')
             }else{
@@ -85,9 +86,8 @@ export const UserProvider = ({ children }) => {
   })
   .then(res => res.json())
   .then(resData => {
-    console.log('HEY ', user);
-    
-    fetchUserInfo(user.loginId)
+    console.log('HEY ', resData.data.loginId);
+    fetchUserInfo(resData.data.loginId)
   })
   }
 
@@ -115,7 +115,9 @@ export const UserProvider = ({ children }) => {
 
     //might want to add failsafe if gates here to make sure user is loaded
     const tempProject = {
-      userId : state.userInfo.loginId,
+      userId : state.userInfo.userId,
+      loginId : state.userInfo.loginId,
+
       ...projectObj
     }    
 
