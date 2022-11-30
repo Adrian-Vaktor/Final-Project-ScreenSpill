@@ -93,7 +93,6 @@ const getProjects = async (req, res) => {
 const createProject = async (req, res) => {
     const userId = req.params.userId
     const projectObj = req.body
-    console.log(req.body);
     
     projectObj.projectId = uuidv4()
 
@@ -113,7 +112,6 @@ const createProject = async (req, res) => {
         )
         
         client.close()
-        console.log(result_ofInsert, result_ofUpdate);
         
         res.status(200).json({
             status: 200,

@@ -36,7 +36,16 @@ const reducer = (state, action) => {
         let tempState = {...state}
         tempState.userProjects = action.data
         return tempState
-      }  
+      } 
+
+      // setBrowserProjects
+      case "setBrowserProjects": { 
+        
+        let tempState = {...state}
+        tempState.userProjects = action.data
+        return tempState
+      }   
+      
 
       default:
         throw new Error(`Unrecognized action: ${action.type}`);
@@ -54,7 +63,6 @@ export const UserProvider = ({ children }) => {
         fetch(`/api/userProfile/${userId}`)
         .then(res => res.json())
         .then(resData => {
-          console.log(resData);
           
             if(!resData.data){
               setUserInfo('set-up')
@@ -86,7 +94,6 @@ export const UserProvider = ({ children }) => {
   })
   .then(res => res.json())
   .then(resData => {
-    console.log('HEY ', resData.data.loginId);
     fetchUserInfo(resData.data.loginId)
   })
   }
@@ -96,14 +103,26 @@ export const UserProvider = ({ children }) => {
     dispatch({ type: "setUserInfo", data: info });
   };
 
+  // Set Browser Projects
+  // Immediate update (temporary)
+  const setBrowserProjects = async (data) => {
+    const tempState = { 
+      ...state
+    }
+    tempState.userProjects.push(data)
+    
+    dispatch({type: "setBrowserProjects", data: tempState.userProjects})
+
+  }
+
   // setProjects
   const setProjects = async () => {
-
+    
     try{
-      await fetch(`/api/getProjects/${state.userInfo.loginId}`)
+      await fetch(`/api/getProjects/${state.userInfo.userId}`)
       .then(res => res.json())
       .then(data => {
-        dispatch({ type: "setProjects", data: data });
+        dispatch({ type: "setProjects", data: data.data });
       })
       
     }catch(err){
@@ -111,7 +130,7 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-  const createProject = (projectObj) => {
+  const createProject = (projectObj , triggerReload = null) => {
 
     //might want to add failsafe if gates here to make sure user is loaded
     const tempProject = {
@@ -119,7 +138,7 @@ export const UserProvider = ({ children }) => {
       loginId : state.userInfo.loginId,
 
       ...projectObj
-    }    
+    }        
 
     fetch('/api/createProject', {
       method: 'POST',
@@ -127,9 +146,10 @@ export const UserProvider = ({ children }) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(tempProject)
-  }).then()
-    // dispatch({ type: "createProject", data: tempProject });
+    }).then(() => {
 
+    triggerReload(state => !state)
+  })
   }
 
   return (
@@ -141,7 +161,8 @@ export const UserProvider = ({ children }) => {
               createUser,
               setUserInfo,
               setProjects,
-              createProject
+              createProject,
+              setBrowserProjects
              },
           }
       }

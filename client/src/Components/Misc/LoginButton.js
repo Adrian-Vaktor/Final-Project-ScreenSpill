@@ -21,7 +21,7 @@ const LoginButton = () => {
                     Sign In
                 </button>
                 :
-                <>yo</>
+                <></>
     )
 }
 

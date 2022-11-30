@@ -30,10 +30,10 @@ function App() {
               <Route path='/signin' element={<SignIn_Page />} />
               <Route path='/ux/project-manager' element={<ProjectManager_Page />} />
               <Route path='/ux/profile-setup' element={<ProjectManager_Page />} />
-              <Route path='/ux/project/:projectName' element={<ScreenWriter_Page />} />
-              <Route path='/ux/project/:projectName/map' element={<Map_Page />} />
-              <Route path='/ux/project/:projectName/calendar' element={<Calendar_Page />} />
-              <Route path='/ux/project/:projectName/contacts' element={<Calendar_Page />} />
+              <Route path='/ux/project/:projectId' element={<ScreenWriter_Page />} />
+              <Route path='/ux/project/:projectId/map' element={<Map_Page />} />
+              <Route path='/ux/project/:projectId/calendar' element={<Calendar_Page />} />
+              <Route path='/ux/project/:projectId/contacts' element={<Calendar_Page />} />
               <Route path="*" element={<>Not found</>} />
             </Routes>
           </Router>

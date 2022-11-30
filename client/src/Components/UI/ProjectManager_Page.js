@@ -5,9 +5,11 @@ import LogoutButton from '../Misc/LogoutButton';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
+
 import UserSetup from '../Misc/UserSetup'
 import ModalBackdrop from '../Misc/ModalBackdrop'
 import ProjectSetup from '../Misc/ProjectSetup';
+import ProjectCardContainer from './UI_components/ProjectCardContainer';
 
 const ProjectManager_Page = () => {
 
@@ -18,20 +20,32 @@ const ProjectManager_Page = () => {
         action: { setUser, createUser, setUserInfo, setProjects, createProject },
     } = useContext(UserContext)
 
+    const [ isNeedProjects, setIsNeedProjects ] = useState(false)
     const [ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen ] = useState(false)
+    const [ isProjectsLoaded, setIsProjectsLoaded ] = useState(false)
+    const [ triggerReload, setTriggerReload ] = useState(false)
 
-    useEffect(()=> {
-        console.log(state);
-    }, [state])
-    
     useEffect(() => {
         
         if(user, isAuthenticated){
             setUser(user)
-            setProjects()
+            setIsNeedProjects(true)
+            
             // fetch('/api/hey').then(data => data.json).then(res => console.log(res))
         }
     },[user])
+
+    if(isNeedProjects){
+        
+        if(typeof state.userInfo === 'object' && !isProjectsLoaded){
+            console.log(state);
+
+            setIsNeedProjects(false)
+            setIsProjectsLoaded(true)
+            setProjects()
+        }
+    }
+    
 
     const handleCreateUser = () => {
         const tempUser = {
@@ -47,11 +61,17 @@ const ProjectManager_Page = () => {
         setIsCreateNewProjectWindowOpen(true)
     }
 
+    // useEffect(() => {
+    //     setProjects()
+        
+    // },[state.userInfo])
+
     const handleGetProjects = () => {
-        fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
-            data => data.json()
-        ).then(res => console.log(res)
-        )
+        // fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
+        //     data => data.json()
+        // ).then(res => console.log())
+        console.log(state);
+        
     }
 
     return (
@@ -81,6 +101,7 @@ const ProjectManager_Page = () => {
                             ?
                             <>
                             <ProjectSetup 
+                                triggerReload={setTriggerReload}
                                 isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
                                 setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
                             <ModalBackdrop 
@@ -100,12 +121,6 @@ const ProjectManager_Page = () => {
                                 get projects
                         </button>
 
-
-
-
-
-
-
                     </>
                 }
             </>
@@ -117,6 +132,7 @@ const ProjectManager_Page = () => {
                     {user?.name}
                 </article>
             }
+            <ProjectCardContainer />
         </>
     )
 }

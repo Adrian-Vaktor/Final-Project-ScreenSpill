@@ -3,9 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import { UserContext } from '../Context/UserContext';
 
-
-const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen}) => {
+const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen, triggerReload}) => {
     const { user, isAuthenticated } = useAuth0()
+
+    
     
     const getDate = () => {
 
@@ -20,21 +21,42 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
 
     const { 
         state: { state },
-        action: { setUser, createUser, setUserInfo, setProjects, createProject },
+        action: { setUser, createUser, setUserInfo, setProjects, createProject, setBrowserProjects },
     } = useContext(UserContext)
     
     const initInputState = {
         title: '',
         authors: `${state.userInfo.firstName} ${state.userInfo.lastName}`,
         date: getDate(),
-        copyright: ''
-
-
+        copyright: '',
+        mapLocations: [],
+        organizerLists: [],
+        contacts: [],
+        script: []
     }
+
     const [ inputStates, setInputStates ] = useState(initInputState)
 
-    const handleCreateButton = () => {
-        createProject(inputStates)
+    const handleCreateButton = async () => {
+        // createProject(inputStates, triggerReload)
+        setIsCreateNewProjectWindowOpen(false)
+        const tempProject = {
+            ...inputStates,
+            userId : state.userInfo.userId,
+            loginId : state.userInfo.loginId,
+          }        
+          setBrowserProjects(tempProject)
+      
+          fetch('/api/createProject', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tempProject)
+          }).then(() => {
+    
+            setProjects()
+        })
     }
 
     const handleInputChange = (e, field) => {
@@ -42,10 +64,7 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
             const tempObj = { ...inputStates}
             tempObj[field] = e.target.value
             setInputStates(tempObj)
-            console.log(e.target.value);
-            
         }
-
     }    
     
 
@@ -127,9 +146,9 @@ const Content = styled.div`
 `
 
 const ProjectSetup_Wrapper = styled.div`
-    width: 90%;
+    width: 400px;
     max-width: 700px;
-    height: 80%;
+    height: 500px;
     // min-height: 700px;
 
     background-color: white;

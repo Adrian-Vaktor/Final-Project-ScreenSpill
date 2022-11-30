@@ -33,6 +33,8 @@ express()
 
     
     .get('/api/getProjects/:userId', getProjects)
+    // .get('/api/getProject/:projectId', getProjects)
+
     .post('/api/createProject', createProject)
     .patch('/api/updateProject/:projectId', updateProject)
     .delete('/api/deleteProject/:projectId', deleteProject)
