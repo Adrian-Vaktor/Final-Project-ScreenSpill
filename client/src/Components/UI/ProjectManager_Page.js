@@ -46,25 +46,9 @@ const ProjectManager_Page = () => {
         }
     }
     
-
-    const handleCreateUser = () => {
-        const tempUser = {
-            name: 'Adrian',
-            style: 'Black Metal',
-            loginId: state.userLoginInfo.sub,
-            projects: [],
-        }
-        createUser(tempUser)
-    }
-
     const handleCreateProject = () => {
         setIsCreateNewProjectWindowOpen(true)
     }
-
-    // useEffect(() => {
-    //     setProjects()
-        
-    // },[state.userInfo])
 
     const handleGetProjects = () => {
         // fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
@@ -73,6 +57,8 @@ const ProjectManager_Page = () => {
         console.log(state);
         
     }
+
+
 
     return (
         <>
@@ -90,9 +76,6 @@ const ProjectManager_Page = () => {
                     <>
                         <UserSetup />
                         <ModalBackdrop />
-                        <button onClick={handleCreateUser}>
-                            create user
-                        </button>
                     </>
                     :
                     <>

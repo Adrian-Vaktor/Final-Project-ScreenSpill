@@ -11,9 +11,7 @@ import BlogPost_Page from './Components/HomePages/BlogPost_Page';
 import About_Page from './Components/HomePages/About_Page';
 import SignIn_Page from './Components/HomePages/SignIn_Page';
 import ProjectManager_Page from './Components/UI/ProjectManager_Page';
-import ScreenWriter_Page from './Components/UI/ScreenWriter_Page';
-import Map_Page from './Components/UI/Map_Page';
-import Calendar_Page from './Components/UI/Calendar_Page';
+import Project_HomePage from './Components/UI/Project_HomePage';
 
 
 function App() {
@@ -30,10 +28,10 @@ function App() {
               <Route path='/signin' element={<SignIn_Page />} />
               <Route path='/ux/project-manager' element={<ProjectManager_Page />} />
               <Route path='/ux/profile-setup' element={<ProjectManager_Page />} />
-              <Route path='/ux/project/:projectId' element={<ScreenWriter_Page />} />
-              <Route path='/ux/project/:projectId/map' element={<Map_Page />} />
-              <Route path='/ux/project/:projectId/calendar' element={<Calendar_Page />} />
-              <Route path='/ux/project/:projectId/contacts' element={<Calendar_Page />} />
+              <Route path='/ux/project/:projectId' element={<Project_HomePage />} />
+              <Route path='/ux/project/:projectId/map' element={<>map</>} />
+              <Route path='/ux/project/:projectId/organizer' element={<>calendar</>} />
+              <Route path='/ux/project/:projectId/contacts' element={<>contacts</>} />
               <Route path="*" element={<>Not found</>} />
             </Routes>
           </Router>

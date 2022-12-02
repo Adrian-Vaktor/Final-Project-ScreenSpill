@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import { UserContext } from '../Context/UserContext';
+import { useNavigate } from "react-router-dom";
 
 const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen, triggerReload}) => {
     const { user, isAuthenticated } = useAuth0()
 
-    
+    const navigate = useNavigate()
     
     const getDate = () => {
 
@@ -39,6 +40,7 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
 
     const handleCreateButton = async () => {
         // createProject(inputStates, triggerReload)
+        console.log('PAYYYYYYYYY')
         setIsCreateNewProjectWindowOpen(false)
         const tempProject = {
             ...inputStates,
@@ -53,9 +55,13 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(tempProject)
-          }).then(() => {
-    
+          })
+          .then((res) => res.json())
+          .then(data =>{
+            console.log('asfasfdfdsdfdsfafd',data);
+            
             setProjects()
+            navigate(`/ux/project/${data.data}`)
         })
     }
 

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
 export const UserContext = createContext();
 
@@ -17,12 +17,12 @@ const intitialState = {
 const reducer = (state, action) => {
     switch (action.type) {
 
-      // setUser
-      case "setUser": { 
-        let tempState = {...state}
-        tempState.userLoginInfo = action.data
-        return tempState
-      }  
+        // setUser
+        case "setUser": { 
+          let tempState = {...state}
+          tempState.userLoginInfo = action.data
+          return tempState
+        }  
 
       // setUserInfo
       case "setUserInfo": { 
@@ -45,8 +45,13 @@ const reducer = (state, action) => {
         tempState.userProjects = action.data
         return tempState
       }   
-      
 
+      // setPersistedState
+      case "setPersistedState": { 
+        return action.data
+      }   
+      
+  
       default:
         throw new Error(`Unrecognized action: ${action.type}`);
     }
@@ -57,6 +62,39 @@ const reducer = (state, action) => {
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intitialState);
+
+  const setLocalStorage = (data) => {
+    localStorage.setItem("ScreenSpill-UserState", JSON.stringify(data));
+  }
+
+const setPersistedState = (data) => {
+  console.log('setting persisted');
+  setLocalStorage(data)
+  dispatch({ type: "setPersistedState", data: data });
+}
+
+useEffect(()=> {
+
+  let persistentState = JSON.parse(localStorage.getItem("ScreenSpill-UserState"))
+  console.log('this', persistentState );
+  
+  if(persistentState !== null){
+    console.log('clg');
+    setPersistedState(persistentState)
+  }
+
+  // return () => {
+  //     console.log('before exit',state);
+      
+  //   }
+}, [])
+
+
+
+useEffect(() => {
+  setLocalStorage(state)
+},[state])
+
 
   const fetchUserInfo = async (userId) => {
     try{
@@ -162,7 +200,8 @@ export const UserProvider = ({ children }) => {
               setUserInfo,
               setProjects,
               createProject,
-              setBrowserProjects
+              setBrowserProjects,
+              setPersistedState
              },
           }
       }

@@ -116,7 +116,7 @@ const createProject = async (req, res) => {
         res.status(200).json({
             status: 200,
             message: 'data',
-            // data: result
+            data: projectObj.projectId
         })
 
     }catch(err){
