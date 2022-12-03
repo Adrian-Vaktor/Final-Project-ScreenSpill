@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import LoginButton from '../Misc/LoginButton'
+import LogoutButton from '../Misc/LogoutButton'
 
 
 const Home_Page = () => {
@@ -8,9 +10,24 @@ const Home_Page = () => {
 
 
     return (
-        <>Home_Page</>
+        <>
+        Home_Page
+            <SignInWrapper>
+                <LoginButton />
+                <LogoutButton />
+            </SignInWrapper>
+        </>
     )
 }
+
+
+
+const SignInWrapper = styled.div`
+
+
+
+`
+
 
 
 export default Home_Page;

@@ -22,51 +22,51 @@ const Project_HomePage = () => {
 
     const [ currentProject, setCurrentProject ] = useState(undefined)
     const [ currentFunctionPage, setCurrentFunctionPage ] = useState('script')
-
-    const [ projectWork, setProjectWork ] = useState(currentProject)
-
+    const [ projectWork, setProjectWork ] = useState(undefined)    
+    const [ currentPersistedStateFlag, setCurrentPersistedStateFlag ] = useState(false)
 
     const navigate = useNavigate()
-    //For managing a persistant state on the page 
-    //- so you can reload and not lose the project from the UserContext -> without fetch
 
+    useEffect(()=> {
+        if(projectWork === undefined && currentProject!== undefined){
+            setProjectWork(currentProject)
+        }
 
-    const [ currentPersistedStateFlag, setCurrentPersistedStateFlag ] = useState(false)
+    },[currentProject])
     
     useEffect(() => {
         let persistentState = JSON.parse(localStorage.getItem("ScreenSpill-UserState"))
         setPersistedState(persistentState)
-
         const currentProjectFind = persistentState.userProjects.find(element => element.projectId === projectId);
         setCurrentProject(currentProjectFind)
         setCurrentPersistedStateFlag(true)
 
     },[projectId])
 
-    
+
     const handleChooseFunction = (functionPage) => {
         setCurrentFunctionPage(functionPage)
     }
 
 
     const saveWork = (work) => {
-        setCurrentProject(work)
-        fetch(`/api/updateProject/${projectId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(work)
-        })
-        .then(res => res.json())
-        .then(resData => {
-            console.log('hot sauce');
-            
-            setProjects()
-        })
+        if(work !== undefined){
+            setCurrentProject(work)
+            fetch(`/api/updateProject/${projectId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(work)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                console.log('hot sauce');
+                
+                setProjects()
+            })
+        }
     }
-
-
 
 
     useEffect(() => {
@@ -83,9 +83,11 @@ const Project_HomePage = () => {
         <>
         {
             projectWork
+            
             ?
             <ProjectHomePage_Wrapper>
                 <UIHeader>
+
                     <Button onClick={() => {saveWork(projectWork)}} >Save</Button>
                 </UIHeader>
                 <BodyContainer>
@@ -93,7 +95,7 @@ const Project_HomePage = () => {
                         <FunctionButton onClick={()=> {handleChooseFunction('script')}}>Script</FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}>Organizer</FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('map')}}>Map</FunctionButton>
-                        <FunctionButton onClick={()=> {handleChooseFunction('contacts')}}>Contacts</FunctionButton>
+                        {/* <FunctionButton onClick={()=> {handleChooseFunction('contacts')}}>Contacts</FunctionButton> */}
                     </UISideBar>
                     
                         {

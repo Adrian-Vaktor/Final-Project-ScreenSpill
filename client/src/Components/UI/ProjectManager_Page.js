@@ -28,17 +28,17 @@ const ProjectManager_Page = () => {
     useEffect(() => {
         
         if(user, isAuthenticated){
+            console.log('setting');
+            
             setUser(user)
             setIsNeedProjects(true)
             
-            // fetch('/api/hey').then(data => data.json).then(res => console.log(res))
         }
     },[user])
 
     if(isNeedProjects){
         
         if(typeof state.userInfo === 'object' && !isProjectsLoaded){
-            console.log(state);
 
             setIsNeedProjects(false)
             setIsProjectsLoaded(true)
@@ -54,7 +54,6 @@ const ProjectManager_Page = () => {
         // fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
         //     data => data.json()
         // ).then(res => console.log())
-        console.log(state);
         
     }
 
@@ -64,10 +63,11 @@ const ProjectManager_Page = () => {
         <>
         {
             //Check if user is logging in for the first time (no profile settings)
-            state.userInfo === 'not-set' ?
-            <>
+            state.userInfo === 'not-set' 
+            ?
+            <div>
                 no-data
-            </>
+            </div>
             :
             <>
                 {
