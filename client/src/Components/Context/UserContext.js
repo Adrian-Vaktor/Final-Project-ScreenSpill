@@ -68,7 +68,6 @@ export const UserProvider = ({ children }) => {
   }
 
 const setPersistedState = (data) => {
-  console.log('setting persisted');
   setLocalStorage(data)
   dispatch({ type: "setPersistedState", data: data });
 }
@@ -76,17 +75,10 @@ const setPersistedState = (data) => {
 useEffect(()=> {
 
   let persistentState = JSON.parse(localStorage.getItem("ScreenSpill-UserState"))
-  console.log('this', persistentState );
   
   if(persistentState !== null){
-    console.log('clg');
     setPersistedState(persistentState)
   }
-
-  // return () => {
-  //     console.log('before exit',state);
-      
-  //   }
 }, [])
 
 

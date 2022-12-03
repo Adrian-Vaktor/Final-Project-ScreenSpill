@@ -40,7 +40,6 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
 
     const handleCreateButton = async () => {
         // createProject(inputStates, triggerReload)
-        console.log('PAYYYYYYYYY')
         setIsCreateNewProjectWindowOpen(false)
         const tempProject = {
             ...inputStates,
@@ -57,9 +56,8 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
             body: JSON.stringify(tempProject)
           })
           .then((res) => res.json())
-          .then(data =>{
-            console.log('asfasfdfdsdfdsfafd',data);
-            
+          .then(data =>{       
+                 
             setProjects()
             navigate(`/ux/project/${data.data}`)
         })

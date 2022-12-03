@@ -9,10 +9,7 @@ const UserSetup = () => {
         state: { state },
         action: { setUser, createUser, setUserInfo, setProjects, createProject },
     } = useContext(UserContext)
-
-    console.log(state.userLoginInfo);
     
-
     const initInputState = {
         'firstName': state.userLoginInfo.given_name,
         'lastName': state.userLoginInfo.family_name,
@@ -45,13 +42,10 @@ const UserSetup = () => {
     }
 
     const handleChangeInput = (e, field) => {
-        console.log(field);
         
         if(Object.keys(inputsState).includes(field)){
-            console.log('yes');
 
             if(field != 'picture'){
-                console.log(e.target.value);
                 let tempObj = { ...inputsState }
                 tempObj[field] = e.target.value
                 
@@ -61,7 +55,6 @@ const UserSetup = () => {
     }
 
     useEffect(() => {
-        // console.log(imageUpload);
 
     }, [imageUpload])
 
