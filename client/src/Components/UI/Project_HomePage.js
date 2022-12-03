@@ -11,8 +11,6 @@ import Contacts from './Functional_Components/Contacts';
 import Map from './Functional_Components/Map';
 
 
-
-
 const Project_HomePage = () => {
 
     const { 
