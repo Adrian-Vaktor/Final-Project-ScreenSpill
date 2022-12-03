@@ -16,8 +16,6 @@ const {
     updateUser
 
 } = require('./Handlers/handlers.js')
-console.log(getUserInfo);
-
 
 express()
 

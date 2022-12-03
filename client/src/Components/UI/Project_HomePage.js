@@ -35,7 +35,6 @@ const Project_HomePage = () => {
     
     useEffect(() => {
         let persistentState = JSON.parse(localStorage.getItem("ScreenSpill-UserState"))
-        console.log('heya',persistentState)
         setPersistedState(persistentState)
 
         const currentProjectFind = persistentState.userProjects.find(element => element.projectId === projectId);
@@ -44,25 +43,7 @@ const Project_HomePage = () => {
 
     },[projectId])
 
-    useEffect(()=> {
-        if(currentPersistedStateFlag){
-
-            setProjectWork(currentProject)
-            window.addEventListener('keypress', (e) => {
-                if(e.key === 'p'){
-                    console.log("this",state)
-                }
-            })
-            return () => {
-                window.removeEventListener('keypress', (e) => {
-                    if(e.key === 'p'){
-                        console.log("this",state)
-                    }
-                })
-            }
-        }
-    },[currentPersistedStateFlag])
-
+    
     const handleChooseFunction = (functionPage) => {
         setCurrentFunctionPage(functionPage)
     }
@@ -118,21 +99,21 @@ const Project_HomePage = () => {
                         {
                             currentFunctionPage === 'script'
                             ?
-                            <ScriptWriter currentProject={currentProject} projectWork={projectWork} setProjectWork={setProjectWork}></ScriptWriter>
+                            <ScriptWriter projectWork={projectWork} setProjectWork={setProjectWork}></ScriptWriter>
                             :
                             <></>
                         }
                         {
                             currentFunctionPage === 'organizer'
                             ?
-                            <Organizer></Organizer>
+                            <Organizer projectWork={projectWork} setProjectWork={setProjectWork}></Organizer>
                             :
                             <></>
                         }
                         {
                             currentFunctionPage === 'map'
                             ?
-                            <Map></Map>
+                            <Map projectWork={projectWork} setProjectWork={setProjectWork}></Map>
                             :
                             <></>
                         }

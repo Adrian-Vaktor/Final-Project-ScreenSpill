@@ -3,14 +3,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0()
-    console.log(isAuthenticated);
 
-    
     if (isLoading) {
-        console.log("loading");
+        // console.log("loading");
     }
     else if (!isAuthenticated) {
-        console.log("authenticated: ", isAuthenticated);
+        // console.log("authenticated: ", isAuthenticated);
     }
 
     return (

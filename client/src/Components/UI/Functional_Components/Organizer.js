@@ -9,34 +9,43 @@ const initListId = uuidv4()
 const initCardId = uuidv4()
 
 
-const initCard = {
-        cardId: initCardId,
-        cardName: 'My Card',
-        cardDescription: '',
-        assignees: '',
-        parentListid: initListId,
-        styleId: 0
+class InitCard {
+        constructor() {
+          this.cardId = uuidv4();
+          this.cardName = 'New Card';
+          this.cardDescription = '';
+          this.assignees = '';
+          // parentListid: initListId,
+          this.styleId = 0
+        }
+
       }
 
-const initList =   { 
-  listId: initListId,
-  listName: 'My List',
-  cardDescription: '',
-  assignees: '',
-  cards: [{...initCard}],
+class InitList { 
+  constructor() {
+
+    this.listId = uuidv4();
+    this.listName = 'New List';
+    this.cardDescription = '';
+    this.assignees = '';
+    this.cards = [ new InitCard() ]
+
+  }
 }
 
 const intialListState = [
-  {...initList}
+  new InitList()
 ]
 
-const initStyleState = {}
 
-function Organizer() {
-
+function Organizer({projectWork, setProjectWork}) {
+  
+  
+  const ifInitial = projectWork.organizerLists.length !== 0 ? projectWork.organizerLists : intialListState
+  
   const [ initFlag, setInitFlag ] = useState(false)
 
-  const [ listsState, setListsState ] = useState(intialListState)
+  const [ listsState, setListsState ] = useState(ifInitial)
   const [ isMouseDown, setIsMouseDown ] = useState(false)
   const [ clickedCard, setClickedCard ] = useState(undefined)
   const [ isDrag, setIsDrag ] = useState(false)
@@ -58,9 +67,13 @@ function Organizer() {
   
 
   const handleAddList = () => {
-    let tempNewList = { ...intialListState[0] }
+    let tempNewList = new InitList()
     tempNewList.listId = uuidv4()
-    tempNewList.listName = 'Untitled List'
+    // tempNewList.cards[0].cardId = uuidv4()
+    // tempNewList.cards[0].cardName = uuidv4()
+
+    tempNewList.listName = 'New List'
+
     setListsState([...listsState, tempNewList])
   }
 
@@ -146,11 +159,9 @@ function Organizer() {
 
   const handleMouseUp = (index) => {
 
-    console.log(listsState)
     let id = clickedCard.id
-    console.log(index);
-
     id = id
+
     .replaceAll('l-',' ')
     .replaceAll('_c-',' ')
     .split(' ')
@@ -159,18 +170,36 @@ function Organizer() {
     let tempListState = [...listsState]
     const start = tempListState[id[0]].cards.slice(0, id[1])
     const end = tempListState[id[0]].cards.slice(id[1])
+    const movedCard = tempListState[id[0]].cards[id[1]]
+    const removedCards = tempListState[id[0]].cards.filter((el) => {
+      
+      return (el.cardId !== movedCard.cardId)
+    })
 
-    tempListState[id[0]].cards = [...start, ...end]
-    console.log(tempListState[id[0]].cards[id[1]]);
-    
-
-    tempListState[index].cards.push(tempListState[id[0]].cards[id[1]])
-
-    
+    tempListState[id[0]].cards = removedCards
+    console.log('templist',tempListState);
+    // tempListState[id[0]].cards = [...start, ...end]
+    tempListState[index].cards.push(movedCard)
+    setListsState(tempListState)
   }
 
-  // window.addEventListener('mouseup', handleMouseUp_Drag)
   let listIndex = 0
+
+
+  const handleAddNewCard = () => {
+
+  }
+
+
+  useEffect(()=> {
+        
+    setProjectWork(state => {
+        return {...state, organizerLists: listsState}
+    })
+    
+},[listsState])
+
+
   return (
 
     <CardOrganizer_Wrapper>
@@ -188,21 +217,29 @@ function Organizer() {
               <div>
                 {list.listName}
               </div>
-              {list.cards.map((card, cardIndex) => {
-                
-                return (
-                  <Card 
-                    key={randomKey()}
-                    id={`l-${listIndex}_c-${cardIndex}`}
-                    style={handleStylePosition(listIndex, cardIndex)}
-                    onMouseDown={handleMouseDown_Drag}
-                    onMouseUp={handleMouseUp_Drag}
-                    >
-                    {card.cardName}
-                    
-                  </Card>
-                )
-              })
+              {
+                list.cards.length == 0 
+                ?
+                <AddCardButton onClick={() => {handleAddNewCard()}}>+</AddCardButton>
+                :
+                <>
+                {list.cards.map((card, cardIndex) => {
+                  
+                    return (
+                      <Card 
+                        key={randomKey()}
+                        id={`l-${listIndex}_c-${cardIndex}`}
+                        style={handleStylePosition(listIndex, cardIndex)}
+                        onMouseDown={handleMouseDown_Drag}
+                        onMouseUp={handleMouseUp_Drag}
+                        >
+                        {card.cardName}
+                        
+                      </Card>
+                    )
+                  })
+                }
+                </>
               }
             </List>
           )
@@ -212,6 +249,11 @@ function Organizer() {
     </CardOrganizer_Wrapper>
   );
 }
+
+const AddCardButton = styled.button`
+  height: 50px; 
+
+`
 
 const Card = styled.div`
   background-color: green;
@@ -260,7 +302,7 @@ const WorkspaceWrapper = styled.div`
 
 const CardOrganizer_Wrapper = styled.div`
   // padding: 10px;
-  height: 100vh;
+  flex-grow: 1;
   width: 100%;
   // display: flex;
   // flex-direction: row;

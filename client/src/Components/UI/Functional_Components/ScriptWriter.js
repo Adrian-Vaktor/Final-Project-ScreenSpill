@@ -122,10 +122,7 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
     
     }
 
-    useEffect(() => {
-        console.log('no');
-        console.log(currentLine);
-        
+    useEffect(() => {        
         const prepped = prepareDocForDom(currentLine)
         setPreppedLine(prepped)        
     },[])
@@ -148,19 +145,11 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
         }
 
         if(window.getSelection().toString().length !== 0){
-            console.log('hey');
             let select = window.getSelection()
             let range = select.getRangeAt(0)
-            console.log(range);
             if(range.commonAncestorContainer.getElementsByTagName){
                 let allWithinRangeParent = range.commonAncestorContainer.getElementsByTagName("*")
-                console.log(allWithinRangeParent);
             }
-            
-            
-            console.log(select.toString().split('\n'));
-            
-            
         }
         
         if(e.key === 'Enter'){
@@ -229,8 +218,6 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
     
         }else if(e.key === 'Backspace'){
             if(insertSelectState !== null){
-                console.log('back');
-
 
                 //to get a list of the original string 
                 const tempStrArr = currentLine.join("")
@@ -260,8 +247,6 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
                 start.pop()
 
                 tempCurrentLine = [...start, ...end]
-
-                console.log(tempCurrentLine);
                 
                 setCurrentLine(tempCurrentLine)
 
@@ -344,8 +329,6 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
                 }else{
 
                     if(insertSelectState !== null){
-                        console.log('YOUPI');
-
 
                         //to get a list of the original string 
                         const tempStrArr = currentLine.join("")
@@ -472,20 +455,11 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
 
 
         }else{
-            console.log('nooooooooooo');
             
             setInsertSelectState(null)
             setinsertCount(0)
             setDeleteCount(0)
-
-
         }
-
-        console.log(
-            parseFloat(getComputedStyle(e.target).fontSize),
-            e.clientX,
-            e.target.offsetLeft,
-        )
     }
 
     return (
@@ -558,10 +532,12 @@ const TextNode = styled.div`
 `
 
 const TextArea = styled.div`
+
     &&:focus{
         outline: none;
     }
     margin: 0;
+    margin-top: 20px;
     margin-left: 20px;
     flex-grow:1;
     background-color: white;
@@ -569,19 +545,25 @@ const TextArea = styled.div`
     align-items: flex-start;
     flex-direction: column;
     max-width: 50em;
-    height: 1000px;
+    max-height: 90vh;
     padding-bottom: 400px;
-    overflow-x: hidden;
+    // overflow-x: hidden;
+    overflow-y: scroll;
+
 `
 
 const ScriptWriter_Wrapper = styled.div`
+
     margin: 0;
     flex-grow:1;
 
     display: flex;
     justify-content: center;
     max-height: 90vh;
-    overflow-y: scroll
+    // overflow-x: scroll;
+
+    // overflow-y: scroll
+
 
     // width: 100%;
     // height: 100%;

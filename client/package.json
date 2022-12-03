@@ -16,6 +16,7 @@
     "mapbox-gl": "^2.11.0",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-router-dom": "^6.4.3",
