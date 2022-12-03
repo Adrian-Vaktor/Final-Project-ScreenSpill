@@ -8,7 +8,6 @@ const Home_Page = () => {
 
     // fetch('/api/hello').then(res => res.json()).then(data => console.log(data));
 
-
     return (
         <>
         Home_Page
@@ -23,8 +22,6 @@ const Home_Page = () => {
 
 
 const SignInWrapper = styled.div`
-
-
 
 `
 

@@ -81,8 +81,6 @@ const Map = ({projectWork, setProjectWork}) => {
     const [ mapOffset, setMapOffset ] = useState(undefined)
     const [ colorPickerFlag, setColorPickerFlag ] = useState(false)
 
-
-
     const [ inputMarkerState, setInputMarkerState ] = useState({
         name: '',
         color: 'red'
@@ -139,9 +137,7 @@ const Map = ({projectWork, setProjectWork}) => {
     }
 
     useEffect(() => {
-
         map.current.on('contextmenu', handleMapClick)
-
             return () => {
                 map.current.off('contextmenu', handleMapClick)
             }
@@ -167,18 +163,20 @@ const Map = ({projectWork, setProjectWork}) => {
 
         }else{
 
-            for (const feature of markersState) {
-                // create a HTML element for each feature
-                const el = document.createElement('div');
-                el.style.width = `${50}px`
-                el.style.height = `${50}px`
-                el.className = 'marker red';
-                
-                el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
-
-                // make a marker for each feature and add to the map
-                new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map.current);
-              }
+            if(map.current){
+                for (const feature of markersState) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.style.width = `${50}px`
+                    el.style.height = `${50}px`
+                    el.className = 'marker red';
+                    
+                    el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
+    
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map.current);
+                  }
+            }
         }
     },[hideMarkers, markersState])
 
@@ -186,9 +184,7 @@ const Map = ({projectWork, setProjectWork}) => {
         setHideMarkers(state => !state)
 
         let markersToChange = []
-
         map.current._markers.forEach(marker => {
-
             if([...marker._element.classList].includes('red')){
                 // marker.remove();
 
@@ -300,7 +296,18 @@ const MapContainer = styled.div`
         height: 50px;
         border-radius: 50%;
         cursor: pointer;
+        animation: 1s ease-out 0s 1 slideInFromLeft;
+
+        
     }
+    @keyframes slideInFromLeft {
+        0% {
+          opacity: 0%;
+        }
+        100% {
+          opacity: 100%;
+        }
+      }
 `
 
 const Marker = styled.div`
