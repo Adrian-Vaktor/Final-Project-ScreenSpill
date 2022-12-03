@@ -4,7 +4,7 @@ import { Editor, EditorState } from 'draft-js'
 import { useEffect, useRef, useState } from 'react'
 
 
-const ScriptWriter = ({}) => {
+const ScriptWriter = ({saveWork}) => {
 
     // const [ textArea, setTextArea ] = useState(null)
 
@@ -22,7 +22,6 @@ const ScriptWriter = ({}) => {
     const [ deleteCount, setDeleteCount ] = useState(0)
 
 
-    
     const formatDict = {
         '~/~NewLine~/~': ''
     }

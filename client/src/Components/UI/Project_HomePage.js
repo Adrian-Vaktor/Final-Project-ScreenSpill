@@ -20,9 +20,7 @@ const Project_HomePage = () => {
 
     const { projectId } = useParams()
     const [ currentProject, setCurrentProject ] = useState(undefined)
-
     const [ currentFunctionPage, setCurrentFunctionPage ] = useState('script')
-    
 
 
     const navigate = useNavigate()
@@ -64,6 +62,13 @@ const Project_HomePage = () => {
     }
 
 
+    const saveWork = () => {
+        console.log(currentProject);
+        
+        // fetch('/api/updateProject/:projectId')
+    }
+
+
     return (
         <>
         {
@@ -83,7 +88,7 @@ const Project_HomePage = () => {
                         {
                             currentFunctionPage === 'script'
                             ?
-                            <ScriptWriter></ScriptWriter>
+                            <ScriptWriter saveWork={saveWork}></ScriptWriter>
                             :
                             <></>
                         }
