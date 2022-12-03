@@ -19,15 +19,20 @@ const Project_HomePage = () => {
     } = useContext(UserContext)
 
     const { projectId } = useParams()
+
     const [ currentProject, setCurrentProject ] = useState(undefined)
     const [ currentFunctionPage, setCurrentFunctionPage ] = useState('script')
+
+    const [ projectWork, setProjectWork ] = useState(currentProject)
 
 
     const navigate = useNavigate()
     //For managing a persistant state on the page 
     //- so you can reload and not lose the project from the UserContext -> without fetch
 
+
     const [ currentPersistedStateFlag, setCurrentPersistedStateFlag ] = useState(false)
+    
     useEffect(() => {
         let persistentState = JSON.parse(localStorage.getItem("ScreenSpill-UserState"))
         console.log('heya',persistentState)
@@ -36,10 +41,13 @@ const Project_HomePage = () => {
         const currentProjectFind = persistentState.userProjects.find(element => element.projectId === projectId);
         setCurrentProject(currentProjectFind)
         setCurrentPersistedStateFlag(true)
+
     },[projectId])
 
     useEffect(()=> {
         if(currentPersistedStateFlag){
+
+            setProjectWork(currentProject)
             window.addEventListener('keypress', (e) => {
                 if(e.key === 'p'){
                     console.log("this",state)
@@ -56,26 +64,49 @@ const Project_HomePage = () => {
     },[currentPersistedStateFlag])
 
     const handleChooseFunction = (functionPage) => {
-        console.log(functionPage);
-        
         setCurrentFunctionPage(functionPage)
     }
 
 
-    const saveWork = () => {
-        console.log(currentProject);
-        
-        // fetch('/api/updateProject/:projectId')
+    const saveWork = (work) => {
+        setCurrentProject(work)
+        fetch(`/api/updateProject/${projectId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(work)
+        })
+        .then(res => res.json())
+        .then(resData => {
+            console.log('hot sauce');
+            
+            setProjects()
+        })
     }
+
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            saveWork(projectWork)
+            clearInterval(interval)
+        }, 1500);
+        return () => clearInterval(interval);
+      }, [projectWork]);
+
 
 
     return (
         <>
         {
-            currentProject
+            projectWork
             ?
             <ProjectHomePage_Wrapper>
-                <UIHeader>Header</UIHeader>
+                <UIHeader>
+                    <Button onClick={() => {saveWork(projectWork)}} >Save</Button>
+                </UIHeader>
                 <BodyContainer>
                     <UISideBar>
                         <FunctionButton onClick={()=> {handleChooseFunction('script')}}>Script</FunctionButton>
@@ -84,11 +115,10 @@ const Project_HomePage = () => {
                         <FunctionButton onClick={()=> {handleChooseFunction('contacts')}}>Contacts</FunctionButton>
                     </UISideBar>
                     
-                    {/* <FunctionsContainer> */}
                         {
                             currentFunctionPage === 'script'
                             ?
-                            <ScriptWriter saveWork={saveWork}></ScriptWriter>
+                            <ScriptWriter currentProject={currentProject} projectWork={projectWork} setProjectWork={setProjectWork}></ScriptWriter>
                             :
                             <></>
                         }
@@ -120,8 +150,7 @@ const Project_HomePage = () => {
                             :
                             <></>
                         }
-                    {/* </FunctionsContainer> */}
-                    {/* <TEST></TEST> */}
+ 
                 </BodyContainer>
 
             </ProjectHomePage_Wrapper>
@@ -134,13 +163,15 @@ const Project_HomePage = () => {
     )
 }
 
-const TEST = styled.div`
-    // width: 100vw;
-    // height: 100vh;
-    // flex-grow:1;
+const Button = styled.button`
+    border: none;
+    background-color: lightBlue;
+    width: 100px;
+    height: 90%;
+    &&:hover{
+        cursor: alias;
+    }
 
-
-    background-color: white;
 `
 const FunctionsContainer = styled.div`
     // height: 100%;

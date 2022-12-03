@@ -160,13 +160,19 @@ const deleteProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
     const projectId = req.params.projectId
+    const body = req.body
+    delete body._id
+    console.log('getting it', projectId, body);
+    
 
     try{
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
 
+        const queryObj = { 'projectId': projectId }
+
         const db = client.db('ScreenSpill')
-        const result = await db.collection('Projects').updateOne()
+        const result = await db.collection('Projects').updateOne(queryObj, { $set: body})
         console.log(result);
         
         client.close()
@@ -174,7 +180,7 @@ const updateProject = async (req, res) => {
         res.status(200).json({
             status: 200,
             message: 'project updated',
-            data: result[0]
+            // data: result[0]
         })
 
     }catch(err){

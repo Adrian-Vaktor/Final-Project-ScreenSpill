@@ -50,7 +50,7 @@ const reducer = (state, action) => {
       case "setPersistedState": { 
         return action.data
       }   
-      
+
   
       default:
         throw new Error(`Unrecognized action: ${action.type}`);

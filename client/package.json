@@ -5,11 +5,13 @@
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@auth0/auth0-react": "^1.12.0",
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
+    "google-maps": "^4.3.3",
     "image-to-base64": "^2.2.0",
     "mapbox-gl": "^2.11.0",
     "react": "^18.2.0",

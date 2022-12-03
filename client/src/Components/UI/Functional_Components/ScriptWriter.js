@@ -4,11 +4,11 @@ import { Editor, EditorState } from 'draft-js'
 import { useEffect, useRef, useState } from 'react'
 
 
-const ScriptWriter = ({saveWork}) => {
+const ScriptWriter = ({projectWork, setProjectWork}) => {
 
     // const [ textArea, setTextArea ] = useState(null)
 
-    const [ currentLine, setCurrentLine ] = useState([])
+    const [ currentLine, setCurrentLine ] = useState(projectWork.script)
     const [ preppedLine, setPreppedLine ] = useState([])
 
     const [ newLineFlag, setNewLineFlag ] = useState(false)
@@ -21,10 +21,13 @@ const ScriptWriter = ({saveWork}) => {
     const [ insertCount, setinsertCount ] = useState(0)
     const [ deleteCount, setDeleteCount ] = useState(0)
 
-
-    const formatDict = {
-        '~/~NewLine~/~': ''
-    }
+    useEffect(()=> {
+        
+        setProjectWork(state => {
+            return {...state, script: currentLine}
+        })
+        
+    },[currentLine])
 
     const textModes = [
         '~/~scene-line~/~',
@@ -42,7 +45,6 @@ const ScriptWriter = ({saveWork}) => {
 
 
     const prepareDocForDom = (inputLine) => {
-
         
         let docPrepArr = []
         let lineFormatState = 'scene-line'
@@ -120,6 +122,14 @@ const ScriptWriter = ({saveWork}) => {
     
     }
 
+    useEffect(() => {
+        console.log('no');
+        console.log(currentLine);
+        
+        const prepped = prepareDocForDom(currentLine)
+        setPreppedLine(prepped)        
+    },[])
+
 
     const setModeAndLine = (modePointer) => {
         setModePointerState(modePointer)
@@ -133,7 +143,6 @@ const ScriptWriter = ({saveWork}) => {
         setPreppedLine(prepped)
     }
 
-    
     const handleKeyDown = (e) => {
         if(e.key === 'a'){
         }
@@ -242,7 +251,8 @@ const ScriptWriter = ({saveWork}) => {
                     sumLengths += tempStrArr[i].length
                 }
 
-                const insertIndex = 1 + lineSelectIndex + pointer + sumLengths + insertCount + deleteCount
+                const insertIndex = 2 + lineSelectIndex + pointer + sumLengths + insertCount + deleteCount
+                
             
                 let tempCurrentLine = [...currentLine]
                 const start = tempCurrentLine.slice(0, insertIndex)
@@ -356,7 +366,7 @@ const ScriptWriter = ({saveWork}) => {
                             sumLengths += tempStrArr[i].length
                         }
 
-                        const insertIndex = 1 + lineSelectIndex + pointer + sumLengths + insertCount + deleteCount
+                        const insertIndex = 2 + lineSelectIndex + pointer + sumLengths + insertCount + deleteCount
                     
                         let tempCurrentLine = [...currentLine]
                         const start = tempCurrentLine.slice(0, insertIndex)
@@ -421,12 +431,10 @@ const ScriptWriter = ({saveWork}) => {
     
     const handleSpace = (e) => {
         e.preventDefault()
-        
     }
 
     const handleSelectClick = (e) => {
         console.log(e.path[0]);
-        
     }
 
     useEffect(() => {
@@ -437,12 +445,12 @@ const ScriptWriter = ({saveWork}) => {
         return () => {
                     document.removeEventListener('keydown', handleSpace)
                     document.removeEventListener('mousedown', handleSelectClick)
-
                 }
     },[])
 
     const handleClick = () => {
-        ref.current.focus();    };
+        ref.current.focus()   
+    };
 
     const randomKey = () => {
         return Math.floor(Math.random()*10000000000000)
@@ -477,8 +485,8 @@ const ScriptWriter = ({saveWork}) => {
             parseFloat(getComputedStyle(e.target).fontSize),
             e.clientX,
             e.target.offsetLeft,
-            )
-    }  
+        )
+    }
 
     return (
             <ScriptWriter_Wrapper>
