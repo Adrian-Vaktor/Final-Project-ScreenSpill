@@ -6,29 +6,57 @@ import { useNavigate } from "react-router-dom";
 
 
 const ProjectCard = ({project}) => {
+
+    const { 
+        state: { state },
+        action: { setUser, createUser, setUserInfo, setProjects, createProject, setPersistedState, deleteProject },
+    } = useContext(UserContext)
+
+    
     const navigate = useNavigate()
-
     const handleEditButton = () => {
-
         navigate(`/ux/project/${project.projectId}`)
+    }
 
+    const handleDeleteButton = () => {
+        deleteProject(project.projectId)
     }
 
     return (
         <Card_Wrapper>
             <Content>
                 <Card_Div>
-                    <div>{project.title}</div>
-                    <div>{project.authors}</div>
-                    <Button onClick={handleEditButton}>Edit</Button>
-                    <Button>Delete</Button>
-
+                    <DivLeft>{project.title}</DivLeft>
+                    <DivLeft>{project.authors}</DivLeft>
+                    <DivCenter>
+                        <Button onClick={handleEditButton}>Edit</Button>
+                    </DivCenter>
+                    <DivCenter>
+                        <Button onClick={handleDeleteButton}>Delete</Button>
+                    </DivCenter>
                 </Card_Div>
-
             </Content>
         </Card_Wrapper>
     )
 }
+
+const DivCenter = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+
+`
+
+const DivLeft = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px;
+
+
+
+`
 
 const Card_Div = styled.div`
     padding: 0 10px;
@@ -42,7 +70,7 @@ const Card_Div = styled.div`
 `
 
 const Button = styled.button`
-    width: 130px;
+    width: 100px;
     height: 40px;
     border-radius: 3px;
     border: none;

@@ -186,7 +186,12 @@ function Organizer({projectWork, setProjectWork}) {
   let listIndex = 0
 
 
-  const handleAddNewCard = () => {
+  const handleAddNewCard = (index) => {
+    let tempListState = [...listsState]
+    const newCard = new InitCard()
+    tempListState[index].cards.push(newCard)
+
+    setListsState(tempListState)
 
   }
 
@@ -220,12 +225,13 @@ function Organizer({projectWork, setProjectWork}) {
               {
                 list.cards.length == 0 
                 ?
-                <AddCardButton onClick={() => {handleAddNewCard()}}>+</AddCardButton>
+                <AddCardButton onClick={() => {handleAddNewCard(index)}}>+</AddCardButton>
                 :
                 <>
                 {list.cards.map((card, cardIndex) => {
                   
                     return (
+                      <>
                       <Card 
                         key={randomKey()}
                         id={`l-${listIndex}_c-${cardIndex}`}
@@ -236,9 +242,12 @@ function Organizer({projectWork, setProjectWork}) {
                         {card.cardName}
                         
                       </Card>
+
+                      </>
                     )
                   })
                 }
+                <AddCardButton onClick={() => {handleAddNewCard(index)}}>+</AddCardButton>
                 </>
               }
             </List>
@@ -276,9 +285,11 @@ const List = styled.div`
   flex-direction: column;
   // justify-content: flex-start
   min-width: 200px;
-  margin-right: 10px;
-  border-radius: 5px
-`
+  margin: 0 10px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  
+  `
 
 const Test = styled.div`
   width: 100px;
@@ -290,7 +301,7 @@ const Test = styled.div`
 `
 
 const WorkspaceWrapper = styled.div`
-  padding: 10px;
+  padding: 20px;
   height: 200px;
   min-width: 100%;
   display: flex;

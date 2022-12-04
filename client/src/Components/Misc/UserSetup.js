@@ -1,13 +1,17 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../Context/UserContext";
+import ModalBackdrop from "./ModalBackdrop";
 
 
-const UserSetup = () => {
+const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
+
+    const { logout, isAuthenticated } = useAuth0()
 
     const { 
         state: { state },
-        action: { setUser, createUser, setUserInfo, setProjects, createProject },
+        action: { setUser, createUser, setUserInfo, setProjects, createProject, editUserinfo, fetchUserInfo },
     } = useContext(UserContext)
     
     const initInputState = {
@@ -20,14 +24,20 @@ const UserSetup = () => {
         'bio': '',
         'loginId': state.userLoginInfo.sub,
         'projects': []
-
     }
+
+    const initiState = isEdit ? state.userInfo : initInputState
+    const initImage = isEdit ? state.userInfo.picture : state.userLoginInfo.picture
+    const initMedia = isEdit ? state.userInfo.media : ""
+
     
+    const [ inputsState, setInputsState ] = useState(initiState)
+    const [ imageUpload, setImageUpload ] = useState(initImage)
 
-    const [ imageUpload, setImageUpload ] = useState(state.userLoginInfo.picture)
-    const [ inputsState, setInputsState ] = useState(initInputState)
 
+    const [ isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen ] = useState(false)
 
+    
 
     const handleFileSelect = (e) => {
         let upload = ''
@@ -55,16 +65,88 @@ const UserSetup = () => {
     }
 
     useEffect(() => {
+        if(imageUpload){
+            let tempInputsState = {...inputsState}
+            tempInputsState.picture = imageUpload
+            setInputsState(tempInputsState)
+        }
 
     }, [imageUpload])
 
     const handleSubmitProfileInfo = () => {
-        createUser(inputsState)
+
+        if(isEdit){
+
+        }else{
+            createUser(inputsState)
+        }
 
     }
 
+
+    const handleEditProfileInfo = () => {
+
+        fetch(`/api/updateUser/${state.userInfo.userId}`,{
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(inputsState)
+          })
+          .then(res => res.json())
+          .then(resData => {
+            console.log(resData);
+            
+            fetchUserInfo(state.userInfo.loginId)
+            setIsEditUserModalOpen(false)
+          })
+    }
+
+
+
+    const handleDeleteProfile = () => {
+        setIsConfirmDeleteModalOpen(true)
+
+    }
+
+    const handleDeleteProfileConfirm = () => {
+        fetch(`/api/deleteUser/${state.userInfo.userId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(state.userInfo)
+          })
+          .then((res) => res.json())
+          .then((data) => {
+      
+            console.log(data);
+            
+          })
+    }
+
+
     return (
         <UserSetup_Wrapper>
+            {
+                isConfirmDeleteModalOpen
+                ?
+                <>
+                    <ConfirmDeleteDiv>
+        
+                        <h2>You sure you want to delete your profile?</h2>
+                        <ButtonDiv>
+                            <button onClick={handleDeleteProfileConfirm}>Yes, delete</button>
+                            <button onClick={() => {setIsConfirmDeleteModalOpen(false)}}>No, cancel</button>
+                        </ButtonDiv>
+                    </ConfirmDeleteDiv>
+                    {/* <ModalBackdrop /> */}
+                
+                </>
+                :
+                <></>
+
+            }
 
             <Content>
                 <Title>
@@ -114,8 +196,8 @@ const UserSetup = () => {
                         <LabelText>Media</LabelText>
 
                         <Select_Wrapper>
-                                <select onChange={(e) => {handleChangeInput(e, 'media')}}name="media" id="media">
-                                    <option default disabled value="">Genre</option>
+                                <select defaultValue={initMedia} onChange={(e) => {handleChangeInput(e, 'media')}}name="media" id="media">
+                                    <option disabled value="">Choose</option>
                                     <option value="tv">TV</option>
                                     <option value="film">Film</option>
                                     <option value="streaming">Streaming</option>
@@ -133,14 +215,62 @@ const UserSetup = () => {
                         </textarea>
                     </Input_div>
 
-                    <Input_div className={'submit-div'}>
-                        <SubmitButton onClick={handleSubmitProfileInfo}>Submit</SubmitButton>
-                    </Input_div>
+                        {
+                            isEdit
+                            ?
+                            <>
+                                <Input_div className={'submit-div'}>
+                                    <SubmitButton onClick={handleEditProfileInfo}>Confirm Edit</SubmitButton>
+
+                                </Input_div>
+                                <DeleteButton onClick={handleDeleteProfile}>Delete Profile</DeleteButton>
+                            
+                            </>
+                            :
+                            <Input_div className={'submit-div'}>
+                                <SubmitButton onClick={handleSubmitProfileInfo}>Submit</SubmitButton>
+                            </Input_div>
+                        }
                 </Inputs_Section>
             </Content>
         </UserSetup_Wrapper>
     )
 }
+const SureToDelete = styled.div`
+
+`
+
+const ButtonDiv = styled.div`
+
+    // z-index: 100000;
+`
+
+const ConfirmDeleteDiv = styled.div`
+    position: absolute;
+    z-index: 150;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    h2{
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+
+`
+
+const DeleteButton = styled.button`
+
+    color: red
+
+`
 
 const ImageFill = styled.div`
 
@@ -244,7 +374,7 @@ const Input_div = styled.div`
     }
 
     textarea{
-        width: 60%;
+        width: 80%;
         height: 150px;
         margin: 0;
         width: 60%;
@@ -302,6 +432,8 @@ const UserSetup_Wrapper = styled.div`
     transform: translate(-50%, -50%);
     z-index: 10;
     border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
 
 `
 

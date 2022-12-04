@@ -33,7 +33,8 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
         mapLocations: [],
         organizerLists: [],
         contacts: [],
-        script: []
+        script: [],
+        characters: []
     }
 
     const [ inputStates, setInputStates ] = useState(initInputState)
@@ -59,7 +60,7 @@ const ProjectSetup = ({ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindo
           .then(data =>{       
                  
             setProjects()
-            navigate(`/ux/project/${data.data}`)
+            // navigate(`/ux/project/${data.data}`)
         })
     }
 

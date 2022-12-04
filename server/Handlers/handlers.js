@@ -47,7 +47,6 @@ const createUserProfile = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Users').insertOne(newUserItem)
-        console.log(result);
         
         client.close()
         
@@ -75,7 +74,6 @@ const getProjects = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Projects').find(userQueryObj).toArray()
-        console.log(result);
         
         client.close()
         
@@ -133,22 +131,37 @@ const createProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     const projectId = req.params.projectId
+    const body = req.body
+
+    let tempUser = {...body}
+    let tempProjArr = [...tempUser.projects]
+    let newArr = tempProjArr.filter((projId) => {
+        return projId !== projectId
+    })
 
     try{
 
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
 
+        const userfilterObj = { userId: body.userId}        
+        const userQueryObj = {$set: { projects: newArr }}
+        const projectQueryObj = { projectId: projectId}
+
         const db = client.db('ScreenSpill')
-        const result = await db.collection('Projects').deleteOne()
-        console.log(result);
+        const resultUser = await db.collection('Users').updateOne(
+            userfilterObj, userQueryObj
+        )
+        const resultProjects = await db.collection('Projects').deleteOne(
+            projectQueryObj
+        )
         
         client.close()
         
         res.status(200).json({
             status: 200,
             message: 'project deleted',
-            data: result[0]
+            data: {resultUser:resultUser, resultProjects:resultProjects}
         })
 
     }catch(err){
@@ -162,7 +175,6 @@ const updateProject = async (req, res) => {
     const projectId = req.params.projectId
     const body = req.body
     delete body._id
-    console.log('getting it', projectId, body);
     
 
     try{
@@ -173,7 +185,6 @@ const updateProject = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Projects').updateOne(queryObj, { $set: body})
-        console.log(result);
         
         client.close()
         
@@ -198,8 +209,9 @@ const deleteUser = async (req, res) => {
         await client.connect()
 
         const db = client.db('ScreenSpill')
-        const result = await db.collection('Users').deleteOne()
-        console.log(result);
+        // const result = await db.collection('Users').deleteOne()
+        // const result = await db.collection('Projects').deleteMany()
+
         
         client.close()
         
@@ -217,21 +229,40 @@ const deleteUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const userId = req.params.userId
+    const userUpdate = req.body
+
+    console.log(userId, userUpdate);
+    
 
     try{
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
 
+        const filterObj = { userId: userId}
+        const queryObj = { $set: 
+            { 
+                firstName: userUpdate.firstName, 
+                lastName: userUpdate.lastName, 
+                userHandle: userUpdate.userHandle, 
+                email: userUpdate.email, 
+                picture: userUpdate.picture, 
+                media: userUpdate.media, 
+                bio: userUpdate.bio, 
+                loginId: userUpdate.loginId, 
+                projects: userUpdate.projects, 
+            } }
+
         const db = client.db('ScreenSpill')
-        const result = await db.collection('Users').updateOne()
-        console.log(result);
+        const result = await db.collection('Users').updateOne(
+            filterObj, queryObj
+        )
         
         client.close()
         
         res.status(200).json({
             status: 200,
-            message: 'project deleted',
-            data: result[0]
+            message: 'project updated',
+            data: result
         })
 
     }catch(err){

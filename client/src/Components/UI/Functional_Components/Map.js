@@ -5,6 +5,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl'
 import { useRef, useState, useEffect } from 'react';
 
+import {v4 as uuidv4} from 'uuid';
+
+
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 import { SketchPicker } from 'react-color';
@@ -55,6 +58,7 @@ class Feature {
                 title: 'Mapbox',
                 description: place
             }
+            this.markerId = uuidv4()
         }
     }
 
@@ -67,12 +71,14 @@ const Map = ({projectWork, setProjectWork}) => {
 
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const [lat, setLat] = useState(45.4840);
-    const [lng, setLng] = useState(-73.7155);
-    // const [zoom, setZoom] = useState(9.45);
-    const [zoom, setZoom] = useState(2);
 
-    const [hideMarkers, setHideMarkers] = useState(false)
+    const [ lat, setLat ] = useState(45.4840);
+    const [ lng, setLng ] = useState(-73.7155);
+    const [ zoom, setZoom ] = useState(9.45);
+
+    const [ markerStyle, setMarkerStyle ] = useState(`${Math.floor((zoom*2))}px`)
+
+    const [ hideMarkers, setHideMarkers ] = useState(false)
     const [ markersState, setMarkersState ] = useState(projectWork.mapLocations)
 
     const [ markerInfoModalFlag, setMarkerInfoModalFlag ] = useState(false)
@@ -137,11 +143,22 @@ const Map = ({projectWork, setProjectWork}) => {
     }
 
     useEffect(() => {
+
+        const markerArr = document.getElementsByClassName('marker')
+        if(markerArr.length !== 0){
+            [...markerArr].forEach((marker) => {
+                marker.style.width = markerStyle
+                marker.style.height = markerStyle
+            })
+        }
+        setMarkerStyle(`${Math.floor((zoom*2))}px`)
+        console.log(markerStyle);
+
         map.current.on('contextmenu', handleMapClick)
             return () => {
                 map.current.off('contextmenu', handleMapClick)
             }
-
+            
     },[lat,lng, zoom])
 
 
@@ -154,7 +171,7 @@ const Map = ({projectWork, setProjectWork}) => {
 
     const handleClickMarker = (e, feature) => {
 
-        console.log(feature.geometry.coordinates);
+        console.log(feature);
         
     }
 
@@ -167,8 +184,8 @@ const Map = ({projectWork, setProjectWork}) => {
                 for (const feature of markersState) {
                     // create a HTML element for each feature
                     const el = document.createElement('div');
-                    el.style.width = `${50}px`
-                    el.style.height = `${50}px`
+                    el.style.width = markerStyle
+                    el.style.height = markerStyle
                     el.className = 'marker red';
                     
                     el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
@@ -250,6 +267,8 @@ const Map = ({projectWork, setProjectWork}) => {
                     Add Marker
                     
                     <input placeholder={'New Marker'} value={inputMarkerState.name} onChange={(e) => {handleInputMarkerNameChange(e, 'name')}}></input>
+                    <input placeholder={'New Marker'} value={inputMarkerState.name} onChange={(e) => {handleInputMarkerNameChange(e, 'name')}}></input>
+
                     <button onClick={handleColorButtonCLick}>Choose Color</button>
                     {
                         colorPickerFlag
@@ -266,8 +285,17 @@ const Map = ({projectWork, setProjectWork}) => {
                 :
                 <></>
             }
-            <button onClick={handleHideMarkers} >Hide Markers</button>
+            {/* <HideMarkerButton onClick={handleHideMarkers} >Hide Markers</HideMarkerButton> */}
             <MapContainer ref={mapContainer} className="map-container" />
+            <Bottom>
+                {
+                    markersState.map((marker)=> {
+                        return(
+                            <MarkerInfo key={Math.floor(Math.random()*10000000000)} id={marker.markerId}>{marker.geometry.coordinates}</MarkerInfo>
+                        )
+                    })
+                }
+            </Bottom>
             {/* <Wrapper apiKey={"YOUR_API_KEY"} render={render}>
                 <div ref={ref} />
             </Wrapper> */}
@@ -275,6 +303,26 @@ const Map = ({projectWork, setProjectWork}) => {
     )   
 }
 
+const MarkerInfo = styled.div`
+
+    background-color: white;
+    padding: 10px
+`
+
+const Bottom = styled.div`
+    height: 100%;
+    // width: 100%;
+    // height: 70vh;
+    margin: 20px 5vw;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 2px;
+    overflow-y: scroll
+
+`
+
+const HideMarkerButton = styled.button`
+    position: absolute;
+`
 
 const AddMarkerModal = styled.div`
     background-color: red;
@@ -284,22 +332,25 @@ const AddMarkerModal = styled.div`
 `
 
 const Div = styled.div`
-    flex-grow:1
+    flex-grow:1;
+    display: flex;
+    flex-direction: column;
 `
 
 const MapContainer = styled.div`
-    height: 100vh;
+    height: 70vh;
+    margin: 20px 5vw;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     .marker{
         background-size: cover;
         background-color: red;
-        width: 50px;
-        height: 50px;
+        // width: 50px;
+        // height: 50px;
         border-radius: 50%;
         cursor: pointer;
         animation: 1s ease-out 0s 1 slideInFromLeft;
-
-        
     }
+
     @keyframes slideInFromLeft {
         0% {
           opacity: 0%;
@@ -308,6 +359,8 @@ const MapContainer = styled.div`
           opacity: 100%;
         }
       }
+      border-radius: 2px;
+
 `
 
 const Marker = styled.div`

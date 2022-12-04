@@ -10,6 +10,8 @@ import UserSetup from '../Misc/UserSetup'
 import ModalBackdrop from '../Misc/ModalBackdrop'
 import ProjectSetup from '../Misc/ProjectSetup';
 import ProjectCardContainer from './UI_components/ProjectCardContainer';
+import SignInDIv from '../Misc/SignInDiv';
+import LoaderElement from '../Misc/LoaderElement';
 
 const ProjectManager_Page = () => {
 
@@ -22,13 +24,25 @@ const ProjectManager_Page = () => {
 
     const [ isNeedProjects, setIsNeedProjects ] = useState(false)
     const [ isCreateNewProjectWindowOpen, setIsCreateNewProjectWindowOpen ] = useState(false)
+
+    
     const [ isProjectsLoaded, setIsProjectsLoaded ] = useState(false)
     const [ triggerReload, setTriggerReload ] = useState(false)
+    
+    const [ isSignInDivOpen, setIsSignInDivOpen ] = useState(false)
+    const [ isEditUserModalOpen, setIsEditUserModalOpen] = useState(false)
+
+    useEffect(() => {
+
+    },[state])
+
 
     useEffect(() => {
         
         if(user, isAuthenticated){
             console.log('setting');
+            console.log(user);
+            
             
             setUser(user)
             setIsNeedProjects(true)
@@ -54,71 +68,129 @@ const ProjectManager_Page = () => {
         // fetch(`/api/getProjects/${state.userLoginInfo.sub}`).then(
         //     data => data.json()
         // ).then(res => console.log())
-        
     }
 
-
+    const handleToggleSignInDiv = () => {
+        setIsSignInDivOpen(state => !state)
+    }
 
     return (
-        <>
-        {
-            //Check if user is logging in for the first time (no profile settings)
-            state.userInfo === 'not-set' 
-            ?
-            <div>
-                no-data
-            </div>
-            :
-            <>
-                {
-                    //If the 'set-up' flag in the state then bring up the setup component
-                    state.userInfo === 'set-up' ?
-                    <>
-                        <UserSetup />
-                        <ModalBackdrop />
-                    </>
-                    :
-                    <>
-                        {
-                            isCreateNewProjectWindowOpen
-                            ?
-                            <>
-                            <ProjectSetup 
-                                triggerReload={setTriggerReload}
-                                isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
-                                setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
-                            <ModalBackdrop 
-                                isOpen={isCreateNewProjectWindowOpen}
-                                setIsOpen={setIsCreateNewProjectWindowOpen}/>
-                            </>
-                            :
-                            <></>
-                        }
-
-                        {state.userInfo.name}
-                        <button onClick={handleCreateProject}>
-                                create project
-                        </button>
-
-                        <button onClick={handleGetProjects}>
-                                get projects
-                        </button>
-
-                    </>
-                }
-            </>
-        }
-        <LogoutButton></LogoutButton>
+        <ProjectManagerPage_Wrapper>
+            <Header>
             {
-                <article className='column'>
-                    {/* {JSON.stringify(user)} */}
-                    {user?.name}
-                </article>
+                //Check if user is logging in for the first time (no profile settings)
+                state.userInfo === 'not-set' 
+                ?
+                <div>
+                </div>
+                :
+                <>
+                    {
+                        //If the 'set-up' flag in the state then bring up the setup component
+                        state.userInfo === 'set-up' ?
+                        <>
+                            <UserSetup />
+                            <ModalBackdrop />
+                        </>
+                        :
+                        <>
+                            {
+                                isEditUserModalOpen
+                                ?
+                                <EditUser_Wrapper>
+                                    <UserSetup isEdit={true} setIsEditUserModalOpen={setIsEditUserModalOpen}/>
+                                    <ModalBackdrop setIsOpen={setIsEditUserModalOpen}/>
+                                </EditUser_Wrapper>
+                                :
+                                <></>
+                            }
+                            {
+                                isCreateNewProjectWindowOpen
+                                ?
+                                <>
+                                <ProjectSetup 
+                                    triggerReload={setTriggerReload}
+                                    isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
+                                    setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
+                                <ModalBackdrop 
+                                    setIsOpen={setIsCreateNewProjectWindowOpen}/>
+                                </>
+                                :
+                                <></>
+                            }
+
+                            {state.userInfo.name}
+                            <button onClick={handleCreateProject}>
+                                    create project
+                            </button>
+
+                            <button onClick={handleGetProjects}>
+                                    get projects
+                            </button>
+
+                        </>
+                    }
+                </>
             }
-            <ProjectCardContainer />
-        </>
+            <button onClick={handleToggleSignInDiv}>User</button>
+            {
+                isSignInDivOpen
+                ?
+                <SignInWrapper>
+
+                    <SignInDIv setIsEditUserModalOpen={setIsEditUserModalOpen}/>
+                    <ModalBackdrop isInvisible={true} setIsOpen={setIsSignInDivOpen}/>
+
+                </SignInWrapper>
+                :
+                <></>
+            }
+            {/* <LogoutButton></LogoutButton> */}
+
+            </Header>
+
+            {
+                state.userProjects === 'not-set'
+                ?
+                <>
+                    <LoaderElement />
+                    {/* <ModalBackdrop /> */}
+                </>
+                :
+                <ProjectCardContainer />
+
+            }
+        </ProjectManagerPage_Wrapper>
     )
 }
+
+const EditUser_Wrapper = styled.div`
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+
+`
+
+const SignInWrapper = styled.div`
+    position: absolute;
+
+`
+
+const Header = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+`
+
+const ProjectManagerPage_Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+`
 
 
 export default ProjectManager_Page;

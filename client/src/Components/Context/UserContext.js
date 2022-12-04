@@ -88,11 +88,14 @@ useEffect(() => {
 },[state])
 
 
-  const fetchUserInfo = async (userId) => {
+  const fetchUserInfo = async (loginId) => {
     try{
-        fetch(`/api/userProfile/${userId}`)
+        fetch(`/api/userProfile/${loginId}`)
         .then(res => res.json())
         .then(resData => {
+
+          console.log('what is this', resData);
+          
           
             if(!resData.data){
               setUserInfo('set-up')
@@ -177,9 +180,33 @@ useEffect(() => {
       },
       body: JSON.stringify(tempProject)
     }).then(() => {
+      setProjects()
 
-    triggerReload(state => !state)
-  })
+      if(triggerReload){
+        // triggerReload(state => !state)
+      }
+    })
+  }
+
+
+  const deleteProject = (projectId, triggerReload = null) => {
+
+    fetch(`/api/deleteProject/${projectId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(state.userInfo)
+    })
+    .then((res) => res.json())
+    .then((data) => {
+
+      if(triggerReload){
+        triggerReload(state => !state)
+      }  
+      console.log(data);
+      
+    })
   }
 
   return (
@@ -193,7 +220,9 @@ useEffect(() => {
               setProjects,
               createProject,
               setBrowserProjects,
-              setPersistedState
+              setPersistedState,
+              deleteProject,
+              fetchUserInfo
              },
           }
       }

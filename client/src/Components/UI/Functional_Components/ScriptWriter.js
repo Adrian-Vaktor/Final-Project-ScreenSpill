@@ -490,13 +490,16 @@ const TextNode = styled.div`
     font-size: 18px;
 
     &&.scene-line{
+        padding: 0 5%;
+
         margin-top: 1em;
         margin-bottom: 1em;
         background-color: lightgrey;
         text-transform: uppercase;
         font-weight: bolder;
 
-        width: 100%;
+        width: 90%;
+        max-width: 90%;
         overflow-wrap: break-word;
     }
     &&.action-line{
@@ -539,6 +542,7 @@ const TextArea = styled.div`
     margin: 0;
     margin-top: 20px;
     margin-left: 20px;
+    padding-top: 40px;
     flex-grow:1;
     background-color: white;
     display: flex;
@@ -546,11 +550,10 @@ const TextArea = styled.div`
     flex-direction: column;
     max-width: 50em;
     max-height: 90vh;
-    padding-bottom: 400px;
+    padding-bottom: 800px;
     // overflow-x: hidden;
     overflow-y: scroll;
-
-`
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;`
 
 const ScriptWriter_Wrapper = styled.div`
 
@@ -559,7 +562,7 @@ const ScriptWriter_Wrapper = styled.div`
 
     display: flex;
     justify-content: center;
-    max-height: 90vh;
+    max-height: 93vh;
     // overflow-x: scroll;
 
     // overflow-y: scroll

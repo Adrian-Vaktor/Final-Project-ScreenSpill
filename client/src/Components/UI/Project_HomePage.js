@@ -9,6 +9,7 @@ import Organizer from './Functional_Components/Organizer';
 import Calendar from './Functional_Components/Calendar';
 import Contacts from './Functional_Components/Contacts';
 import Map from './Functional_Components/Map';
+import Characters from './Functional_Components/Characters';
 
 
 const Project_HomePage = () => {
@@ -93,8 +94,10 @@ const Project_HomePage = () => {
                 <BodyContainer>
                     <UISideBar>
                         <FunctionButton onClick={()=> {handleChooseFunction('script')}}>Script</FunctionButton>
-                        <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}>Organizer</FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('characters')}}>Characters</FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('map')}}>Map</FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}>Organizer</FunctionButton>
+
                         {/* <FunctionButton onClick={()=> {handleChooseFunction('contacts')}}>Contacts</FunctionButton> */}
                     </UISideBar>
                     
@@ -130,6 +133,13 @@ const Project_HomePage = () => {
                             currentFunctionPage === 'calendar'
                             ?
                             <Calendar></Calendar>
+                            :
+                            <></>
+                        }
+                        {
+                            currentFunctionPage === 'characters'
+                            ?
+                            <Characters projectWork={projectWork} setProjectWork={setProjectWork}></Characters>
                             :
                             <></>
                         }

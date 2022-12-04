@@ -21,7 +21,7 @@ const LogoutButton = () => {
                 ?
                 <button onClick={() => {
                     logout()
-                    setPersistedState(null)
+                    // setPersistedState(null)
                     }}>
                     Sing Out
                 </button>
