@@ -240,6 +240,7 @@ const handleCardEdit = (e) => {
   })
   
   setListsState(tempListState)
+  setIsEditCardModalOpen(false)
 }
 
 
