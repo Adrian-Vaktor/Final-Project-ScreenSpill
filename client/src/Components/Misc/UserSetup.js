@@ -267,9 +267,6 @@ const ConfirmDeleteDiv = styled.div`
         padding: 0;
     }
 
-
-
-
 `
 
 const DeleteButton = styled.button`
