@@ -1,4 +1,4 @@
-// import styled from "styled-components";
+import styled from "styled-components";// import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../Context/UserContext";
@@ -12,14 +12,6 @@ const LoginButton = () => {
 
     const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0()
 
-
-    if (isLoading) {
-        // console.log("loading");
-    }
-    else if (!isAuthenticated) {
-
-        // console.log("authenticated: ", isAuthenticated);
-    }
     
     useEffect(() => {
         if(!isAuthenticated){
@@ -33,12 +25,34 @@ const LoginButton = () => {
 
                 isAuthenticated === false
                 ?
-                <button onClick={() => loginWithRedirect()}>
+                <Button onClick={() => loginWithRedirect()}>
                     Sign In
-                </button>
+                </Button>
                 :
                 <></>
     )
 }
+
+const Button = styled.button`
+
+    border: none;
+    background-color: lightBlue;
+    width: 70px;
+    height: 40px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+
+    &&:hover{
+        cursor: alias;
+    }
+    &&.right{
+        position: absolute;
+        left: 90vw;
+        height: 50px;
+    }
+
+`
+
 
 export default LoginButton;

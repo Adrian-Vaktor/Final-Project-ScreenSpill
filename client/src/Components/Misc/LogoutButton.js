@@ -1,4 +1,4 @@
-// import styled from "styled-components";
+import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserContext } from "../Context/UserContext";
 import { useContext, ueState, useEffect } from "react";
@@ -19,17 +19,33 @@ const LogoutButton = () => {
             {
                 isAuthenticated === true
                 ?
-                <button onClick={() => {
+                <Button onClick={() => {
                     logout()
                     // setPersistedState(null)
                     }}>
                     Sing Out
-                </button>
+                </Button>
                 :
                 <></>
             }
         </>
     )
 }
+
+const Button = styled.button`
+    border: none;
+    background-color: lightBlue;
+    width: 90px;
+    height: 30px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+
+    &&:hover{
+        cursor: alias;
+    }
+
+`
 
 export default LogoutButton;

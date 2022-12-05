@@ -9,7 +9,6 @@ import Home_Page from './Components/HomePages/Home_Page';
 import Blog_Page from './Components/HomePages/Blog_Page';
 import BlogPost_Page from './Components/HomePages/BlogPost_Page';
 import About_Page from './Components/HomePages/About_Page';
-import SignIn_Page from './Components/HomePages/SignIn_Page';
 import ProjectManager_Page from './Components/UI/ProjectManager_Page';
 import Project_HomePage from './Components/UI/Project_HomePage';
 
@@ -25,7 +24,6 @@ function App() {
               <Route path='/blog' element={<Blog_Page />} />
               <Route path='/blog/:postName' element={<BlogPost_Page />} />
               <Route path='/about' element={<About_Page />} />
-              <Route path='/signin' element={<SignIn_Page />} />
               <Route path='/ux/project-manager' element={<ProjectManager_Page />} />
               <Route path='/ux/profile-setup' element={<ProjectManager_Page />} />
               <Route path='/ux/project/:projectId' element={<Project_HomePage />} />

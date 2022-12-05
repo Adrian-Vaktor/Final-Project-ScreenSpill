@@ -184,19 +184,20 @@ const ProjectManager_Page = () => {
 
 
 const Button = styled.button`
-border: none;
-background-color: lightBlue;
-width: 60px;
-height: 70%;
-border-radius: 5px;
-margin-right: 5px;
-margin-left: 5px;
+    border: none;
+    background-color: lightBlue;
+    width: 60px;
+    height: 70%;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
 
-&&:hover{
-    cursor: alias;
-}
+    &&:hover{
+        cursor: alias;
+    }
 
 `
+
 const BackdropWrap = styled.div`
     position: absolute;
     top: 0;
@@ -248,9 +249,8 @@ const Header = styled.div`
         font-size: 100px;
 
         @keyframes example {
-            0%   {top: 100px; }
+            0%   {top: 100px;}
             15%  {transform: rotate(-7deg);}
-            25%  {}
             50% {top: 8px;}
             75% {top: 9px; transform: rotate(0deg)}
             100% {top: 10px;}

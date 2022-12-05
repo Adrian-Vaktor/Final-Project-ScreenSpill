@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext';
-import { Loader } from 'react-feather';
+import { Loader, Edit, MapPin, PlusSquare, User } from 'react-feather';
 import ScriptWriter from './Functional_Components/ScriptWriter';
 import Organizer from './Functional_Components/Organizer';
 import Calendar from './Functional_Components/Calendar';
@@ -96,7 +96,7 @@ const Project_HomePage = () => {
             ?
             <ProjectHomePage_Wrapper>
                 <UIHeader>
-                    <Button onClick={()=> {navigate('/ux/project-manager')}} >Home</Button>
+                    <Button className={'home'} onClick={()=> {navigate('/ux/project-manager')}} >Home</Button>
                     <Button onClick={() => {saveWork(projectWork)}} >Save</Button>
                     <h3>{projectWork.title}</h3>
                     <Button className='right' onClick={handleToggleSignInDiv}>User</Button>
@@ -118,10 +118,10 @@ const Project_HomePage = () => {
                 </UIHeader>
                 <BodyContainer>
                     <UISideBar>
-                        <FunctionButton onClick={()=> {handleChooseFunction('script')}}>Script</FunctionButton>
-                        <FunctionButton onClick={()=> {handleChooseFunction('characters')}}>Characters</FunctionButton>
-                        <FunctionButton onClick={()=> {handleChooseFunction('map')}}>Map</FunctionButton>
-                        <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}>Organizer</FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('script')}}><Edit /></FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('characters')}}><User /></FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('map')}}><MapPin /></FunctionButton>
+                        <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}><PlusSquare /></FunctionButton>
                         <Rest>
                         <FunctionButton className="add">+</FunctionButton>
                         </Rest>
@@ -223,9 +223,12 @@ const Button = styled.button`
     border-radius: 5px;
     margin-right: 5px;
     margin-left: 5px;
+    cursor: pointer;
 
-    &&:hover{
+
+    &&.home{
         cursor: alias;
+
     }
     &&.right{
         position: absolute;

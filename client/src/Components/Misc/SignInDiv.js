@@ -27,7 +27,7 @@ const SignInDIv = ({setIsEditUserModalOpen}) => {
         <SignInDiv_Wrapper>
             <ImageUpload src={imageUpload}/>
             <p>{state.userInfo.userHandle}</p>
-            <button onClick={handleOpenEditUserModal}>Edit User Info</button>
+            <Button onClick={handleOpenEditUserModal}>Edit User Info</Button>
             <SignInWrapper>
                 <LoginButton />
                 <LogoutButton />
@@ -36,6 +36,21 @@ const SignInDIv = ({setIsEditUserModalOpen}) => {
         </SignInDiv_Wrapper>
     )
 }
+
+const Button = styled.button`
+    border: none;
+    background-color: lightBlue;
+    width: 90px;
+    height: 40px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+
+    &&:hover{
+        cursor: pointer;
+    }
+
+`
 
 const SignInWrapper = styled.div`
 
@@ -53,12 +68,13 @@ const ImageUpload = styled.img`
 
 
 const SignInDiv_Wrapper = styled.div`
+    padding: 30px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: absolute;
-    height: 300px;
+    max-height: 300px;
     width: 200px;
     background-color: white;
     left: 100vw;
