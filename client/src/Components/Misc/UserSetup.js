@@ -147,10 +147,18 @@ const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
             }
 
             <Content>
-                <Title>
-                    <h2> Welcome to ScreenSpill! </h2>
-                    <p> Please confirm your profile information: </p>
-                </Title>
+                {
+                    isEdit
+                    ?
+                    <Title>
+                        <h2> Edit your profile </h2>
+                    </Title>
+                    :
+                    <Title>
+                        <h2> Welcome to ScreenSpill! </h2>
+                        <p> Please confirm your profile information: </p>
+                    </Title>
+                }
 
                 <PreFillInfo>
                     <TextFills>

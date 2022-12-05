@@ -103,7 +103,7 @@ const Line = styled.div`
     // margin-bottom: 40%
 `
 
-const Title = styled.h2`
+const Title = styled.h3`
     margin-bottom: 5%;
     margin-top: 5%;
 
@@ -129,7 +129,8 @@ const Input = styled.input`
 
 const Form = styled.div`
     // padding-top: 100px;
-    height: 100%;
+    height: 80%;
+    width: 300px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -153,7 +154,7 @@ const Content = styled.div`
 const ProjectSetup_Wrapper = styled.div`
     width: 400px;
     max-width: 700px;
-    height: 500px;
+    height: 420px;
     // min-height: 700px;
 
     background-color: white;
@@ -164,6 +165,8 @@ const ProjectSetup_Wrapper = styled.div`
     z-index: 10;
     border-radius: 10px;
     overflow-y: scroll;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
 
 `
 export default ProjectSetup;

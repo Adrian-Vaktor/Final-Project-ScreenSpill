@@ -22,21 +22,21 @@ const LoaderElement = () => {
 
 
 const AnimDiv = styled.div`
-@keyframes example {
-    0%   {background-color: red; width:0px; height:0px; opacity: 70%;}
-    25%  {background-color: oange;}
-    50%  {background-color: lemon; }
-    99.9% {background-color: blue; width:1000px; height:1000px; }
-    100% {opacity: 0%;}
-  }
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    background-color: red;
-    animation-name: example;
-    animation-iteration-count: 100;
+    @keyframes animateRed {
+        0%   {background-color: red; width:0px; height:0px; opacity: 70%;}
+        25%  {background-color: oange;}
+        50%  {background-color: lemon; }
+        99.9% {background-color: blue; width:1000px; height:1000px; }
+        100% {opacity: 0%;}
+    }
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        animation-name: animateRed;
+        animation-iteration-count: 100;
 
-    animation-duration: 1s;
+        animation-duration: 1s;
 
 `
 const AnimWrapper = styled.div`

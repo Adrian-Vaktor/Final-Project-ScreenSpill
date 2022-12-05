@@ -97,10 +97,13 @@ const ProjectManager_Page = () => {
                             {
                                 isEditUserModalOpen
                                 ?
-                                <EditUser_Wrapper>
-                                    <UserSetup isEdit={true} setIsEditUserModalOpen={setIsEditUserModalOpen}/>
-                                    <ModalBackdrop setIsOpen={setIsEditUserModalOpen}/>
-                                </EditUser_Wrapper>
+
+                                <BackdropWrap>
+                                    <EditUser_Wrapper>
+                                        <UserSetup isEdit={true} setIsEditUserModalOpen={setIsEditUserModalOpen}/>
+                                        <ModalBackdrop setIsOpen={setIsEditUserModalOpen}/>
+                                    </EditUser_Wrapper>
+                                </BackdropWrap>
                                 :
                                 <></>
                             }
@@ -112,37 +115,38 @@ const ProjectManager_Page = () => {
                                     triggerReload={setTriggerReload}
                                     isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
                                     setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
+                                <BackdropWrap>
                                 <ModalBackdrop 
-                                    setIsOpen={setIsCreateNewProjectWindowOpen}
-                                    isBlack={true}/>
+                                    setIsOpen={setIsCreateNewProjectWindowOpen}/>
+                                
+                                </BackdropWrap>
                                 </>
                                 :
                                 <></>
                             }
 
                             {state.userInfo.name}
-                            <button onClick={handleCreateProject}>
+                            <Button onClick={handleCreateProject}>
                                     create project
-                            </button>
-
-                            <button onClick={handleGetProjects}>
-                                    get projects
-                            </button>
+                            </Button>
+                            <h3>Projects</h3>
 
                         </>
                     }
                 </>
             }
-            <button onClick={handleToggleSignInDiv}>User</button>
+            <Button onClick={handleToggleSignInDiv}>User</Button>
             {
                 isSignInDivOpen
                 ?
-                <SignInWrapper>
+                <BackdropWrap>
+                    <SignInWrapper>
 
-                    <SignInDIv setIsEditUserModalOpen={setIsEditUserModalOpen}/>
-                    <ModalBackdrop isInvisible={true} setIsOpen={setIsSignInDivOpen}/>
+                        <SignInDIv setIsEditUserModalOpen={setIsEditUserModalOpen}/>
+                        <ModalBackdrop isInvisible={true} setIsOpen={setIsSignInDivOpen}/>
 
-                </SignInWrapper>
+                    </SignInWrapper>
+                </BackdropWrap>
                 :
                 <></>
             }
@@ -159,7 +163,9 @@ const ProjectManager_Page = () => {
                         ?
                         <></>
                         :
-                        <LoaderElement />
+                        <BackdropWrap>
+                            <LoaderElement />
+                        </BackdropWrap>
                     }
                     {/* <ModalBackdrop /> */}
                 </>
@@ -171,23 +177,87 @@ const ProjectManager_Page = () => {
     )
 }
 
-const EditUser_Wrapper = styled.div`
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    z-index: 5;
+
+
+const Button = styled.button`
+border: none;
+background-color: lightBlue;
+width: 60px;
+height: 70%;
+border-radius: 5px;
+margin-right: 5px;
+margin-left: 5px;
+
+&&:hover{
+    cursor: alias;
+}
 
 `
+const BackdropWrap = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+`
+
 
 const SignInWrapper = styled.div`
     position: absolute;
+    top:40px;
+    left:0;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 10px;
+
 
 `
+
+const EditUser_Wrapper = styled.div`
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 10px;
+
+
+`
+
 
 const Header = styled.div`
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #e6f0ef;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 10px;
+    padding: 0 200px;
+    overflow: hidden;
+    z-index: 100;
+
+    h3{
+        position: relative;
+        top: 10px;
+        left: -40px;
+        color: #c5d4cb;
+        font-size: 100px;
+
+        @keyframes example {
+            0%   {top: 100px; }
+            15%  {transform: rotate(-7deg);}
+            25%  {}
+            50% {top: 8px;}
+            75% {top: 9px; transform: rotate(0deg)}
+            100% {top: 10px;}
+
+          }
+
+            animation-name: example;
+            animation-iteration-count: 1;
+            animation-duration: 3s;
+    }
+
 
 `
 
@@ -195,6 +265,7 @@ const ProjectManagerPage_Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 
 
 `

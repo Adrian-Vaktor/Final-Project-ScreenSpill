@@ -332,6 +332,16 @@ const Map = ({projectWork, setProjectWork}) => {
             {/* <HideMarkerButton onClick={handleHideMarkers} >Hide Markers</HideMarkerButton> */}
             <MapContainer ref={mapContainer} className="map-container" />
             <Bottom>
+
+                {
+                    markersState.length === 0
+                    ?
+                    <FloatCenter>
+                        <h2>No Markers</h2>
+                    </FloatCenter>
+                    :
+                    <></>
+                }
                 {
                     markersState.map((marker)=> {
                         return(
@@ -354,6 +364,18 @@ const Map = ({projectWork, setProjectWork}) => {
         </Div>
     )   
 }
+
+const FloatCenter = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h2{
+    font-size: 4vw;
+    opacity: 10%;
+  }
+  `
 
 
 const MarkerModal_Wrapper = styled.div`

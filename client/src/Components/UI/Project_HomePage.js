@@ -10,6 +10,8 @@ import Calendar from './Functional_Components/Calendar';
 import Contacts from './Functional_Components/Contacts';
 import Map from './Functional_Components/Map';
 import Characters from './Functional_Components/Characters';
+import SignInDIv from '../Misc/SignInDiv';
+import ModalBackdrop from '../Misc/ModalBackdrop';
 
 
 const Project_HomePage = () => {
@@ -25,6 +27,9 @@ const Project_HomePage = () => {
     const [ currentFunctionPage, setCurrentFunctionPage ] = useState('script')
     const [ projectWork, setProjectWork ] = useState(undefined)    
     const [ currentPersistedStateFlag, setCurrentPersistedStateFlag ] = useState(false)
+
+    const [ isSignInDivOpen, setIsSignInDivOpen ] = useState(false)
+    const [ isEditUserModalOpen, setIsEditUserModalOpen] = useState(false)
 
     const navigate = useNavigate()
 
@@ -78,7 +83,11 @@ const Project_HomePage = () => {
         return () => clearInterval(interval);
       }, [projectWork]);
 
+      const handleToggleSignInDiv = () => {
+        setIsSignInDivOpen(state => !state)
+    }
 
+    
 
     return (
         <>
@@ -90,7 +99,23 @@ const Project_HomePage = () => {
                 <UIHeader>
                     <Button onClick={()=> {navigate('/ux/project-manager')}} >Home</Button>
                     <Button onClick={() => {saveWork(projectWork)}} >Save</Button>
-                    <p></p>
+                    <h3>{projectWork.title}</h3>
+                    <Button className='right' onClick={handleToggleSignInDiv}>User</Button>
+                    {
+                        isSignInDivOpen
+                        ?
+                        <BackdropWrap>
+                            <SignInWrapper>
+
+                                <SignInDIv setIsEditUserModalOpen={setIsEditUserModalOpen}/>
+                                <ModalBackdrop isInvisible={true} setIsOpen={setIsSignInDivOpen}/>
+
+                            </SignInWrapper>
+                        </BackdropWrap>
+                        :
+                        <></>
+                    }
+            {/* <LogoutButton></LogoutButton> */}
                 </UIHeader>
                 <BodyContainer>
                     <UISideBar>
@@ -160,6 +185,25 @@ const Project_HomePage = () => {
     )
 }
 
+
+const BackdropWrap = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+`
+
+
+const SignInWrapper = styled.div`
+    position: absolute;
+    top: 40px;
+    left:0;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 10px;
+
+
+`
+
 const Rest = styled.div`
 
     height: 95%;
@@ -183,6 +227,11 @@ const Button = styled.button`
 
     &&:hover{
         cursor: alias;
+    }
+    &&.right{
+        position: absolute;
+        left: 90vw;
+        height: 50px;
     }
 
 `
@@ -239,6 +288,33 @@ const UIHeader = styled.div`
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.14) 0px 4px 10px;
     z-index: 100;
+    overflow: hidden;
+    
+
+    h3{
+        position: relative;
+        top: 3px;
+        left: 150px;
+        color: #c5d4cb;
+        font-size: 80px;
+        opacity: 60%;
+        transform: rotate(-1deg);
+        overflow-wrap: normal;
+
+        @keyframes example {
+            0%   {top: 100px; rotate(-7deg)}
+            15%  {transform: rotate(-7deg);}
+            25%  {}
+            50% {top: 1px;}
+            75% {top: 2px; transform: rotate(-1deg)}
+            100% {top: 3px;transform: rotate(-1deg)}
+
+          }
+
+            animation-name: example;
+            animation-iteration-count: 1;
+            animation-duration: 2s;
+    }
 
 `
 
