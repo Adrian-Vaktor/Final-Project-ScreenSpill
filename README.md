@@ -1,3 +1,4 @@
 # Final-Project-ScreenSpill
-A free online screenwriting and film shoot planning service
-Hey testing
+
+
+ScreenSpill is an online screenplay creation studio.
