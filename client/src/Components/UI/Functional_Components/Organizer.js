@@ -102,7 +102,6 @@ function Organizer({projectWork, setProjectWork}) {
       tempStyle.left = e.clientX
       tempStyle.top = e.clientY
       setStylesState(tempStyle)
-      console.log(e);
       
       setClickedCard(e.target.parentNode)
 
@@ -194,7 +193,6 @@ function Organizer({projectWork, setProjectWork}) {
       })
   
       tempListState[id[0]].cards = removedCards
-      console.log('templist',tempListState);
       // tempListState[id[0]].cards = [...start, ...end]
       tempListState[index].cards.push(movedCard)
       setListsState(tempListState)
@@ -206,15 +204,11 @@ function Organizer({projectWork, setProjectWork}) {
 
 
   const handleAddNewCard = (index) => {
-    console.log(index);
     
-
     let tempListState = [...listsState]
     
     const newCard = new InitCard()
     tempListState[index].cards.push(newCard)
-    console.log(tempListState, listsState);
-
     setListsState(tempListState)
 
   }
@@ -232,7 +226,6 @@ function Organizer({projectWork, setProjectWork}) {
 const handleCardEdit = (e) => {
   e.preventDefault()
   // setIsSetInfo(true)
-  console.log(cardEditInputsState)
   let tempListState = listsState.map(list => {
     let tempCards = list.cards.map(card => {
       if(card.cardId === cardEditInputsState.cardId){
@@ -330,7 +323,7 @@ useEffect(() => {
 
                 <ListHeader>
                   <ExitButton onMouseDown={() => {handleDeleteList(list)}}/>
-                  {list.listName}
+                  {'List '+ index}
                 </ListHeader>
                 {
                   list.cards.length == 0 

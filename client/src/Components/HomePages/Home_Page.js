@@ -25,7 +25,7 @@ const Home_Page = () => {
                     {/* <Img src={"https://images.ctfassets.net/3s5io6mnxfqz/6NT8egbrktT7iCXOveHa4o/383111b087d8a26ad9e0567279f5374d/AdobeStock_211622740.jpeg"}></Img> */}
                 <SectionDiv>
                     <h2>ScreenPlay Creation Studio</h2>
-                    <Img src={"https://img.icons8.com/ios-filled/500/spill.png"}></Img>
+                    {/* <Img src={"https://img.icons8.com/ios-filled/500/spill.png"}></Img> */}
                 </SectionDiv>
             </HomePage_Wrapper>
             <Background />
@@ -55,16 +55,16 @@ const SectionDiv = styled.div`
     h2{
         position: relative;
         top: -160px;
-        left: 280px;
-        color: #c5d4cb;
+        left: 20vw;
+        color: white;
         font-size: 80px;
 
         @keyframes upAnim {
             0%  {top: 20px; color: white }
             30%  {top: 20px; color: white }
             55% {top: -160px; color: white }
-            80% {top: -160px;; transform: rotate(0deg)}
-            100% {top: -160px; color: #c5d4cb; }
+            80% {top: -160px;; transform: rotate(0deg); color: white;}
+            100% {top: -160px; color: white; }
 
           }
 
@@ -108,7 +108,7 @@ const Fishes = styled.div`
 
 const PageFish = styled.div`
     // offset-path: path("M 0 0 C 0 30 20 500 500 500 C 900 500 700 900 1000 1000 C 1400 1200 1300 1500 1600 1800");
-    animation: move 6000ms infinite ease-in-out;
+    animation: move 5000ms infinite ease-in-out;
     // animation-iteration-count: infinte;
 
     position: relative;
@@ -156,7 +156,6 @@ const Header = styled.div`
         @keyframes example {
             0%   {top: 100px; }
             15%  {transform: rotate(-7deg);}
-            25%  {}
             50% {top: 8px;}
             75% {top: 9px; transform: rotate(0deg)}
             100% {top: 10px;}

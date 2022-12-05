@@ -7,19 +7,11 @@ import { useEffect, useRef, useState } from 'react'
 const Characters = ({projectWork, setProjectWork}) => {
 
     const [ currentLine, setCurrentLine ] = useState(projectWork.script)
-    const [ preppedLine, setPreppedLine ] = useState([])
-
-    const [ newLineFlag, setNewLineFlag ] = useState(false)
-    const [ exitDialogue, setExitDialogue ] = useState(false)
-
-    const [ isTabMode, setIsTabMode ] = useState(false)
-    const [ modePointerState, setModePointerState ] = useState(0)
-
-    const [ insertSelectState, setInsertSelectState ] = useState(null)
-    const [ insertCount, setinsertCount ] = useState(0)
-    const [ deleteCount, setDeleteCount ] = useState(0)
 
     const [ characters, setCharacters ] = useState(projectWork.characters)
+
+    console.log(characters, projectWork.characters);
+    
 
     const prepareDocForDom = (inputLine) => {
 
@@ -120,9 +112,12 @@ const Characters = ({projectWork, setProjectWork}) => {
         })
 
         filterNames.forEach((name) => {
+
+          
+          let tempInfo = projectWork.characters[name.text]?.info ? projectWork.characters[name.text].info : ''
           if(!nameDict[name.text]){
             nameDict[name.text] = {
-              info: '',
+              info: tempInfo,
               description: '',
               appearence: '',
               casting: '',
@@ -133,6 +128,24 @@ const Characters = ({projectWork, setProjectWork}) => {
         setCharacters(nameDict)
       }
     },[currentLine])
+
+
+    const handleInputChange = (e, character) => {
+      
+      let tempState = {...characters}
+      let tempCharacter = {...characters[character]}
+      
+      tempCharacter.info = e.target.value
+      tempState[character] = tempCharacter
+      setCharacters(tempState)      
+    }
+
+    useEffect(()=> {
+      let tempState = {...projectWork}
+      tempState.characters = {...characters}
+      setProjectWork(tempState)
+
+    },[characters])
 
 
     return (
@@ -150,13 +163,16 @@ const Characters = ({projectWork, setProjectWork}) => {
             {
               Object.entries(characters).map((character, index) => {
                 
+                
                 return (
                 
                   <CharacterCard>
                     <p>
                       {`${character[0]}`}
                     </p>
-                    <textarea>
+                    <textarea value={character[1].info} onChange={(e)=> {
+                      handleInputChange(e,character[0])
+                    }}>
 
                     </textarea>
                   </CharacterCard>
