@@ -130,7 +130,6 @@ const Characters = ({projectWork, setProjectWork}) => {
           }
         })
 
-        console.log(nameDict)
         setCharacters(nameDict)
       }
     },[currentLine])

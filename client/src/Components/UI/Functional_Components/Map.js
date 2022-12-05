@@ -156,7 +156,6 @@ const Map = ({projectWork, setProjectWork}) => {
             })
         }
         setMarkerStyle(`${Math.floor((zoom*2))}px`)
-        console.log(markerStyle);
 
         map.current.on('contextmenu', handleMapClick)
             return () => {
@@ -166,23 +165,9 @@ const Map = ({projectWork, setProjectWork}) => {
     },[lat,lng, zoom])
 
 
-    // useEffect(()=> {
-    //     if(addMarkerFlag){
-
-    //     }
-
-    // },[addMarkerFlag])
-
-    const handleClickMarker = (e, feature) => {
-
-        console.log(feature);
-        
-    }
-
     const removeAllMarkersFromMap = (specific) => {
         let markersToChange = []
         map.current._markers.forEach(marker => {
-            console.log(marker);
             
             if([...marker._element.classList].includes('marker')){
                 // marker.remove();
@@ -223,7 +208,6 @@ const Map = ({projectWork, setProjectWork}) => {
                     el.className = `marker`;
                     el.style.backgroundColor = feature.color
                     
-                    el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
                     el.addEventListener('click', (e) => {handleDeleteMarkers(e, feature)})
 
     
@@ -350,7 +334,6 @@ const Map = ({projectWork, setProjectWork}) => {
                             id={marker.markerId}
                             onContextMenu={(e) => {handleDeleteMarkers(e, marker)}}
                             >{marker.properties.description}
-                            {console.log(marker)}
                             <div style={{"backgroundColor" : marker.color}}></div>
                             </MarkerInfo>
                         )

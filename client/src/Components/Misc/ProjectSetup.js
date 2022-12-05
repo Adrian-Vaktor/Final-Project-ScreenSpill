@@ -103,7 +103,7 @@ const Line = styled.div`
     // margin-bottom: 40%
 `
 
-const Title = styled.h3`
+const Title = styled.h2`
     margin-bottom: 5%;
     margin-top: 5%;
 
@@ -135,7 +135,6 @@ const Form = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-
 `
 
 const Content = styled.div`

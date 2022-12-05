@@ -40,9 +40,6 @@ const ProjectManager_Page = () => {
     useEffect(() => {
         
         if(user, isAuthenticated){
-            console.log('setting');
-            console.log(user);
-            
             
             setUser(user)
             setIsNeedProjects(true)
@@ -88,10 +85,10 @@ const ProjectManager_Page = () => {
                     {
                         //If the 'set-up' flag in the state then bring up the setup component
                         state.userInfo === 'set-up' ?
-                        <>
+                        <BackdropWrap>
                             <UserSetup />
                             <ModalBackdrop />
-                        </>
+                        </BackdropWrap>
                         :
                         <>
                             {
@@ -135,7 +132,14 @@ const ProjectManager_Page = () => {
                     }
                 </>
             }
-            <Button onClick={handleToggleSignInDiv}>User</Button>
+            {
+                state.userInfo !== 'set-up' && state.userInfo !== 'not-set' 
+                ?
+                <Button onClick={handleToggleSignInDiv}>User</Button>
+                :
+                <></>
+
+            }
             {
                 isSignInDivOpen
                 ?

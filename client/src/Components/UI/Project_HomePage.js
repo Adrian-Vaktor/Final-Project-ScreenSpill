@@ -67,7 +67,6 @@ const Project_HomePage = () => {
             })
             .then(res => res.json())
             .then(resData => {
-                console.log('hot sauce');
                 
                 setProjects()
             })

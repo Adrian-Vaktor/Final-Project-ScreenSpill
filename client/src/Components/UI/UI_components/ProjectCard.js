@@ -9,7 +9,7 @@ const ProjectCard = ({project}) => {
 
     const { 
         state: { state },
-        action: { setUser, createUser, setUserInfo, setProjects, createProject, setPersistedState, deleteProject },
+        action: { deleteProject },
     } = useContext(UserContext)
 
     

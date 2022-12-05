@@ -23,15 +23,12 @@ express()
     .use(morgan('tiny'))
     .use(helmet())
 
-
     .get('/api/userProfile/:userLoginId', getUserInfo)
     .post('/api/createUserProfile', createUserProfile)
     .patch('/api/updateUser/:userId', updateUser)
     .delete('/api/deleteUser/:userId', deleteUser)
 
-    
     .get('/api/getProjects/:userId', getProjects)
-    // .get('/api/getProject/:projectId', getProjects)
 
     .post('/api/createProject', createProject)
     .patch('/api/updateProject/:projectId', updateProject)

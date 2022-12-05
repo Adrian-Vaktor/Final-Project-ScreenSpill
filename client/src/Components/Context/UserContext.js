@@ -93,9 +93,6 @@ useEffect(() => {
         fetch(`/api/userProfile/${loginId}`)
         .then(res => res.json())
         .then(resData => {
-
-          console.log('what is this', resData);
-          
           
             if(!resData.data){
               setUserInfo('set-up')
@@ -182,9 +179,6 @@ useEffect(() => {
     }).then(() => {
       setProjects()
 
-      if(triggerReload){
-        // triggerReload(state => !state)
-      }
     })
   }
 
@@ -199,13 +193,9 @@ useEffect(() => {
       body: JSON.stringify(state.userInfo)
     })
     .then((res) => res.json())
-    .then((data) => {
+    .then(() => {
 
-      if(triggerReload){
-        triggerReload(state => !state)
-      }  
-      console.log(data);
-      
+      setProjects()
     })
   }
 

@@ -22,19 +22,27 @@ const getUserInfo = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Users').find(userQueryObj).toArray()
-        
         client.close()
-        
-        res.status(200).json({
-            status: 200,
-            message: 'data',
-            data: result[0]
-        })
+
+        if(result.length !== 0){
+            res.status(200).json({
+                status: 200,
+                message: 'data',
+                data: result[0]
+            })
+        }else{
+            res.status(404).json({
+                status: 404,
+                message: 'Error - No user found',
+                data: result[0]
+            })
+        }
 
     }catch(err){
-
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 }
 
@@ -47,7 +55,6 @@ const createUserProfile = async (req, res) => {
 
         const db = client.db('ScreenSpill')
         const result = await db.collection('Users').insertOne(newUserItem)
-        
         client.close()
         
         res.status(200).json({
@@ -60,7 +67,10 @@ const createUserProfile = async (req, res) => {
         })
 
     }catch(err){
-        console.log(err);
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 }
 
@@ -77,14 +87,26 @@ const getProjects = async (req, res) => {
         
         client.close()
         
-        res.status(200).json({
-            status: 200,
-            message: 'data',
-            data: result
-        })
+        if(result.length !== 0){
+            res.status(200).json({
+                status: 200,
+                message: 'data',
+                data: result
+            })
+        }else{
+            res.status(404).json({
+                status: 404,
+                message: 'Error - No user found',
+                data: result
+
+            })
+        }
 
     }catch(err){
-        console.log(err);
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 } 
 
@@ -118,9 +140,10 @@ const createProject = async (req, res) => {
         })
 
     }catch(err){
-
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 } 
 
@@ -165,8 +188,10 @@ const deleteProject = async (req, res) => {
         })
 
     }catch(err){
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 
 }
@@ -195,16 +220,16 @@ const updateProject = async (req, res) => {
         })
 
     }catch(err){
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 }
 
 
 const deleteUser = async (req, res) => {
     const userId = req.params.userId
-    console.log(userId)
-
     
     try{
         const client = new MongoClient(MONGO_URI, options)
@@ -226,8 +251,10 @@ const deleteUser = async (req, res) => {
         })
 
     }catch(err){
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 }
 
@@ -235,7 +262,6 @@ const updateUser = async (req, res) => {
     const userId = req.params.userId
     const userUpdate = req.body
 
-    console.log(userId, userUpdate);
     
 
     try{
@@ -270,8 +296,10 @@ const updateUser = async (req, res) => {
         })
 
     }catch(err){
-        console.log(err);
-        
+        res.status(500).json({
+            status: 500,
+            message: 'Uknown Error',
+        })
     }
 }
 

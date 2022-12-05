@@ -416,18 +416,12 @@ const ScriptWriter = ({projectWork, setProjectWork}) => {
         e.preventDefault()
     }
 
-    const handleSelectClick = (e) => {
-        console.log(e.path[0]);
-    }
-
     useEffect(() => {
 
         document.addEventListener('keydown', handleSpace)
-        document.addEventListener('mousedown', handleSelectClick)
 
         return () => {
                     document.removeEventListener('keydown', handleSpace)
-                    document.removeEventListener('mousedown', handleSelectClick)
                 }
     },[])
 
@@ -490,19 +484,20 @@ const TextNode = styled.div`
     font-size: 18px;
 
     &&.scene-line{
-
         padding: 0 5%;
+        width: 90%;
+        max-width: 90%;
         margin-top: 1em;
         margin-bottom: 1em;
         background-color: lightgrey;
         text-transform: uppercase;
         font-weight: bolder;
-        width: 90%;
-        max-width: 90%;
         overflow-wrap: break-word;
     }
     &&.action-line{
         padding: 0 5%;
+        width: 90%;
+        max-width: 90%;
 
         // background-color: yellow;
         max-width: 100%;
@@ -510,7 +505,6 @@ const TextNode = styled.div`
 
     }
     &&.character-line{
-        padding: 0 5%;
 
         // background-color: orange;
         text-transform: uppercase;
@@ -522,7 +516,6 @@ const TextNode = styled.div`
 
     }
     &&.parenthetical-line{
-        padding: 0 5%;
 
         // background-color: green;
         margin-left: 12em;
@@ -530,7 +523,6 @@ const TextNode = styled.div`
     }
 
     &&.dialogue-line{
-        padding: 0 5%;
 
         // background-color: blue;
         margin-left: 12em;
@@ -555,11 +547,11 @@ const TextArea = styled.div`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    max-width: 50em;
+    max-width: 55em;
     max-height: 90vh;
     padding-bottom: 800px;
     // overflow-x: hidden;
-    overflow-y: scroll;
+    // overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;`
 
 const ScriptWriter_Wrapper = styled.div`
