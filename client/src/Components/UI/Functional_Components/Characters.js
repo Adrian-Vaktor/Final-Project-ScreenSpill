@@ -138,17 +138,51 @@ const Characters = ({projectWork, setProjectWork}) => {
 
     return (
       <Characters_Wrapper>
+
+
         {
-          Object.entries(characters).map((character, index) => {
-            
-            return <CharacterCard>{`${character[0]}`}</CharacterCard>
-          })
+          Object.entries(characters).length === 0
+          ?
+          <FloatCenter>
+            <h2>No Characters</h2>
+          </FloatCenter>
+          :
+          <>
+            {
+              Object.entries(characters).map((character, index) => {
+                
+                return (
+                
+                  <CharacterCard>
+                    <p>
+                      {`${character[0]}`}
+                    </p>
+                    <textarea>
+
+                    </textarea>
+                  </CharacterCard>
+                )
+              })
+            }
+          </>
+
         }
       </Characters_Wrapper>
     )
-      
-            
 }
+
+const FloatCenter = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h2{
+    font-size: 8vw;
+    opacity: 10%;
+  }
+
+`
         
 const CharacterCard = styled.div`
   background-color: white;
@@ -157,10 +191,25 @@ const CharacterCard = styled.div`
   height: 150px;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   border-radius: 2px;
-  *{
-    flex: 1 1 0px;
+
+  p{
+    margin-left: 20px;
+    max-width: 100px;
+    overflow-wrap: break-word;
+    text-transform: uppercase;
   }
+
+  textarea{
+    resize: none;
+    width: 80%;
+    height: 70%;
+  }
+  // *{
+  //   flex: 1 1 0px;
+  // }
 
   `
 

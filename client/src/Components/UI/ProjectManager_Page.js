@@ -113,7 +113,8 @@ const ProjectManager_Page = () => {
                                     isCreateNewProjectWindowOpen={isCreateNewProjectWindowOpen}
                                     setIsCreateNewProjectWindowOpen={setIsCreateNewProjectWindowOpen}/>
                                 <ModalBackdrop 
-                                    setIsOpen={setIsCreateNewProjectWindowOpen}/>
+                                    setIsOpen={setIsCreateNewProjectWindowOpen}
+                                    isBlack={true}/>
                                 </>
                                 :
                                 <></>
@@ -153,7 +154,13 @@ const ProjectManager_Page = () => {
                 state.userProjects === 'not-set'
                 ?
                 <>
-                    <LoaderElement />
+                    {
+                        state.userInfo === 'set-up'
+                        ?
+                        <></>
+                        :
+                        <LoaderElement />
+                    }
                     {/* <ModalBackdrop /> */}
                 </>
                 :

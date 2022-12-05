@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ModalBackdrop = ({isInvisible, setIsOpen }) => {
+const ModalBackdrop = ({isInvisible, setIsOpen, isBlack }) => {
 
     const handleClick = () => {
         if(setIsOpen){
@@ -17,9 +17,27 @@ const ModalBackdrop = ({isInvisible, setIsOpen }) => {
         {
             isInvisible
             ?
-            <ModalBackdrop_Wrapper_Invisible onClick={handleClick}></ModalBackdrop_Wrapper_Invisible>
+            <>
+                {
+                    isBlack
+                    ?
+                    <ModalBackdrop_Wrapper_Invisible className={'black'} onClick={handleClick}></ModalBackdrop_Wrapper_Invisible>
+                    :
+                    <ModalBackdrop_Wrapper_Invisible onClick={handleClick}></ModalBackdrop_Wrapper_Invisible>
+
+                }
+            </>
             :
-            <ModalBackdrop_Wrapper onClick={handleClick}></ModalBackdrop_Wrapper>
+            <>
+                {
+                    isBlack
+                    ?
+                    <ModalBackdrop_Wrapper className={'black'} onClick={handleClick}></ModalBackdrop_Wrapper>
+                    :
+                    <ModalBackdrop_Wrapper onClick={handleClick}></ModalBackdrop_Wrapper>
+
+                }
+            </>
         }
         
         </>
@@ -32,6 +50,10 @@ const ModalBackdrop_Wrapper_Invisible = styled.div`
     position: absolute;
     background-color: white;
     opacity: 0;
+
+    &.black{
+        background-color: black;
+    }
 `
 
 const ModalBackdrop_Wrapper = styled.div`
@@ -40,6 +62,10 @@ const ModalBackdrop_Wrapper = styled.div`
     position: absolute;
     background-color: white;
     opacity: 0.5;
+
+    &.black{
+        background-color: black;
+    }
 `
 
 export default ModalBackdrop; 

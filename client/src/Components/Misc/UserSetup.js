@@ -28,8 +28,9 @@ const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
 
     const initiState = isEdit ? state.userInfo : initInputState
     const initImage = isEdit ? state.userInfo.picture : state.userLoginInfo.picture
-    const initMedia = isEdit ? state.userInfo.media : ""
 
+    const initMedia = isEdit ? state.userInfo.media : ""
+    
     
     const [ inputsState, setInputsState ] = useState(initiState)
     const [ imageUpload, setImageUpload ] = useState(initImage)
@@ -95,7 +96,6 @@ const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
           })
           .then(res => res.json())
           .then(resData => {
-            console.log(resData);
             
             fetchUserInfo(state.userInfo.loginId)
             setIsEditUserModalOpen(false)
@@ -119,9 +119,7 @@ const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
           })
           .then((res) => res.json())
           .then((data) => {
-      
-            console.log(data);
-            
+            logout()
           })
     }
 
@@ -178,9 +176,9 @@ const UserSetup = ({isEdit, setIsEditUserModalOpen}) => {
                     </TextFills>
                     <ImageFill>
                         {
-                            imageUpload 
+                            imageUpload
                             ?
-                            <ImageUpload src={imageUpload}/>
+                            <ImageUpload src={imageUpload} alt="icon From Login"/>
                             :
                             <>uploading</>
                         }

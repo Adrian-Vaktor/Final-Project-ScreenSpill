@@ -88,8 +88,9 @@ const Project_HomePage = () => {
             ?
             <ProjectHomePage_Wrapper>
                 <UIHeader>
-
+                    <Button onClick={()=> {navigate('/ux/project-manager')}} >Home</Button>
                     <Button onClick={() => {saveWork(projectWork)}} >Save</Button>
+                    <p></p>
                 </UIHeader>
                 <BodyContainer>
                     <UISideBar>
@@ -97,6 +98,9 @@ const Project_HomePage = () => {
                         <FunctionButton onClick={()=> {handleChooseFunction('characters')}}>Characters</FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('map')}}>Map</FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('organizer')}}>Organizer</FunctionButton>
+                        <Rest>
+                        <FunctionButton className="add">+</FunctionButton>
+                        </Rest>
 
                         {/* <FunctionButton onClick={()=> {handleChooseFunction('contacts')}}>Contacts</FunctionButton> */}
                     </UISideBar>
@@ -156,20 +160,30 @@ const Project_HomePage = () => {
     )
 }
 
+const Rest = styled.div`
+
+    height: 95%;
+    width: 100%;
+    margin-top: 5%;
+    background-color: #badfe0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start
+`
+
 const Button = styled.button`
     border: none;
     background-color: lightBlue;
-    width: 100px;
-    height: 90%;
+    width: 60px;
+    height: 70%;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+
     &&:hover{
         cursor: alias;
     }
-
-`
-const FunctionsContainer = styled.div`
-    // height: 100%;
-    // width: 100%;
-    // flex-grow:1;
 
 `
 
@@ -188,10 +202,21 @@ const BodyContainer = styled.div`
 
 const FunctionButton = styled.button`
     border: none;
-    width: 92%;
-    height: 60px;
+    width: 50px;
+    min-height: 50px;
+    heightL 50px;
     background-color: lightBlue;
+    margin-top: 5px;
     margin-bottom: 5px;
+    border-radius: 50%;
+
+    &.add{ 
+        width: 40px;
+        min-height: 40px;
+        height: 40px;
+        margin-top: 20%;
+        background-color: white;
+    }
 `
 
 const UISideBar = styled.div`
@@ -201,12 +226,20 @@ const UISideBar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 10px;
+    z-index: 9;
+
 `
 
 const UIHeader = styled.div`
     width: 100%;
     height: 60px;
+    display: flex;
+    align-items: center;
     background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 4px 10px;
+    z-index: 100;
+
 `
 
 

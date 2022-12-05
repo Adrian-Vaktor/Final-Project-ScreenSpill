@@ -203,22 +203,26 @@ const updateProject = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const userId = req.params.userId
-    try{
+    console.log(userId)
 
+    
+    try{
         const client = new MongoClient(MONGO_URI, options)
         await client.connect()
 
-        const db = client.db('ScreenSpill')
-        // const result = await db.collection('Users').deleteOne()
-        // const result = await db.collection('Projects').deleteMany()
+        const userQueryObj = { userId: userId }
+        const projectQueryObj = { userId: userId }
 
-        
+        const db = client.db('ScreenSpill')
+        const resultUsers = await db.collection('Users').deleteOne(userQueryObj)
+        const resultProjects = await db.collection('Projects').deleteMany(projectQueryObj)
+
         client.close()
         
         res.status(200).json({
             status: 200,
             message: 'project deleted',
-            data: result[0]
+            data: [resultUsers, resultProjects]
         })
 
     }catch(err){

@@ -490,25 +490,28 @@ const TextNode = styled.div`
     font-size: 18px;
 
     &&.scene-line{
-        padding: 0 5%;
 
+        padding: 0 5%;
         margin-top: 1em;
         margin-bottom: 1em;
         background-color: lightgrey;
         text-transform: uppercase;
         font-weight: bolder;
-
         width: 90%;
         max-width: 90%;
         overflow-wrap: break-word;
     }
     &&.action-line{
+        padding: 0 5%;
+
         // background-color: yellow;
         max-width: 100%;
         overflow-wrap: break-word;
 
     }
     &&.character-line{
+        padding: 0 5%;
+
         // background-color: orange;
         text-transform: uppercase;
         margin-left: 20em;
@@ -519,12 +522,16 @@ const TextNode = styled.div`
 
     }
     &&.parenthetical-line{
+        padding: 0 5%;
+
         // background-color: green;
         margin-left: 12em;
 
     }
 
     &&.dialogue-line{
+        padding: 0 5%;
+
         // background-color: blue;
         margin-left: 12em;
         max-width: 25em;
@@ -562,10 +569,10 @@ const ScriptWriter_Wrapper = styled.div`
 
     display: flex;
     justify-content: center;
-    max-height: 93vh;
+    max-height: 90vh;
     // overflow-x: scroll;
 
-    // overflow-y: scroll
+    overflow-y: hidden;
 
 
     // width: 100%;

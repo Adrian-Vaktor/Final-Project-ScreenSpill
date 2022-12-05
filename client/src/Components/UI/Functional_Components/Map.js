@@ -11,6 +11,7 @@ import {v4 as uuidv4} from 'uuid';
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 import { SketchPicker } from 'react-color';
+import ModalBackdrop from '../../Misc/ModalBackdrop';
 
 // require('dotenv').config()
 // const { REACT_APP_OPENWEATHER } = process.env
@@ -88,9 +89,12 @@ const Map = ({projectWork, setProjectWork}) => {
     const [ colorPickerFlag, setColorPickerFlag ] = useState(false)
 
     const [ inputMarkerState, setInputMarkerState ] = useState({
-        name: '',
+        name: 'New Marker',
         color: 'red'
     })
+
+    const [ colorPicker, setColorPicker ] = useState('#38e88d')
+
 
 
 
@@ -175,34 +179,12 @@ const Map = ({projectWork, setProjectWork}) => {
         
     }
 
-    useEffect(()=> {
-        if(hideMarkers){
-
-        }else{
-
-            if(map.current){
-                for (const feature of markersState) {
-                    // create a HTML element for each feature
-                    const el = document.createElement('div');
-                    el.style.width = markerStyle
-                    el.style.height = markerStyle
-                    el.className = 'marker red';
-                    
-                    el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
-    
-                    // make a marker for each feature and add to the map
-                    new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map.current);
-                  }
-            }
-        }
-    },[hideMarkers, markersState])
-
-    const handleHideMarkers = () => {
-        setHideMarkers(state => !state)
-
+    const removeAllMarkersFromMap = (specific) => {
         let markersToChange = []
         map.current._markers.forEach(marker => {
-            if([...marker._element.classList].includes('red')){
+            console.log(marker);
+            
+            if([...marker._element.classList].includes('marker')){
                 // marker.remove();
 
                 markersToChange.push(marker)
@@ -214,15 +196,62 @@ const Map = ({projectWork, setProjectWork}) => {
             marker.remove()
             // marker._element.classList.remove('red')
         })
+    }
+    const handleDeleteMarkers = (e, targetMarker) => {
+        e.preventDefault()
         
+        let tempmarkersState = markersState.filter((marker) => {
+            return marker.markerId !== targetMarker.markerId
+        })
+        removeAllMarkersFromMap()
+        setMarkersState(tempmarkersState)
+        
+    }
+
+    useEffect(()=> {
+        if(hideMarkers){
+
+        }else{
+            
+            if(map.current){
+                for (const feature of markersState) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.style.width = markerStyle
+                    el.style.height = markerStyle
+                    el.id = feature.markerId
+                    el.className = `marker`;
+                    el.style.backgroundColor = feature.color
+                    
+                    el.addEventListener('click', (e) => {handleClickMarker(e, feature)})
+                    el.addEventListener('click', (e) => {handleDeleteMarkers(e, feature)})
+
+    
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map.current);
+                  }
+            }
+        }
+    },[hideMarkers, markersState])
+
+  
+
+
+    const handleHideMarkers = () => {
+        setHideMarkers(state => !state)
+        removeAllMarkersFromMap()
     }
 
     const handleAddNewMarker = (lat, lng, name) => {
         
         let tempMarkersState = [...markersState]
         let newFeature = new Feature(lng, lat, name)
+        newFeature.color = colorPicker
         tempMarkersState.push(newFeature)
         setMarkersState(tempMarkersState)
+        setColorPickerFlag(false)
+
+        setAddMarkerFlag(false)
     }
 
     const handleInputMarkerNameChange = (e, type) => {
@@ -244,7 +273,7 @@ const Map = ({projectWork, setProjectWork}) => {
 
 
     const handleColorButtonCLick = () => {
-        setColorPickerFlag(true)
+        setColorPickerFlag(state => !state)
     }
 
 
@@ -256,32 +285,47 @@ const Map = ({projectWork, setProjectWork}) => {
         
     },[markersState])
 
+
+    const handleChangeComplete = (color) => {
+        setColorPicker(color.hex)
+    }
+
     return (
         <Div>
             {
                 addMarkerFlag
                 ?
-                <AddMarkerModal 
-                style={{ 'zIndex': '100', position: "absolute", top: `${addMarkerPosition.point.y + mapOffset[1]}px`, left:  `${addMarkerPosition.point.x + mapOffset[0]}px`}} 
-                >
-                    Add Marker
-                    
-                    <input placeholder={'New Marker'} value={inputMarkerState.name} onChange={(e) => {handleInputMarkerNameChange(e, 'name')}}></input>
-                    <input placeholder={'New Marker'} value={inputMarkerState.name} onChange={(e) => {handleInputMarkerNameChange(e, 'name')}}></input>
+                    <>
+                        <AddMarkerModal 
+                        style={{ 'zIndex': '100', position: "absolute", top: `${addMarkerPosition.point.y + mapOffset[1]}px`, left:  `${addMarkerPosition.point.x + mapOffset[0]}px`}} 
+                        >
+                            <p>
+                                Add Marker
+                            </p>
+                            
+                            <input placeholder={'New Marker'} value={inputMarkerState.name} onChange={(e) => {handleInputMarkerNameChange(e, 'name')}}></input>
 
-                    <button onClick={handleColorButtonCLick}>Choose Color</button>
-                    {
-                        colorPickerFlag
-                        ?
-                        <SketchPicker /> 
-                        :
-                        <></>
+                            <button onClick={handleColorButtonCLick}>Choose Color</button>
+                            {
+                                colorPickerFlag
+                                ?
+                                <SketchPicker
+                                color={ colorPicker }
+                                onChangeComplete={ handleChangeComplete } /> 
+                                :
+                                <></>
 
-                    }
-                    <button onClick={() => {handleAddNewMarker(addMarkerPosition.lngLat.lat, addMarkerPosition.lngLat.lng, inputMarkerState.name)}}>
-                        add Marker
-                    </button>
-                </AddMarkerModal>
+                            }
+                            <button onClick={() => {handleAddNewMarker(addMarkerPosition.lngLat.lat, addMarkerPosition.lngLat.lng, inputMarkerState.name)}}>
+                                add Marker
+                            </button>
+                        </AddMarkerModal>
+
+                        <MarkerModal_Wrapper>
+                            <ModalBackdrop isInvisible={true} setIsOpen={setAddMarkerFlag}/>
+                        </MarkerModal_Wrapper>
+                    </>
+
                 :
                 <></>
             }
@@ -291,10 +335,18 @@ const Map = ({projectWork, setProjectWork}) => {
                 {
                     markersState.map((marker)=> {
                         return(
-                            <MarkerInfo key={Math.floor(Math.random()*10000000000)} id={marker.markerId}>{marker.geometry.coordinates}</MarkerInfo>
+                            <MarkerInfo 
+                            key={Math.floor(Math.random()*10000000000)} 
+                            id={marker.markerId}
+                            onContextMenu={(e) => {handleDeleteMarkers(e, marker)}}
+                            >{marker.properties.description}
+                            {console.log(marker)}
+                            <div style={{"backgroundColor" : marker.color}}></div>
+                            </MarkerInfo>
                         )
                     })
                 }
+                <ColoBG />
             </Bottom>
             {/* <Wrapper apiKey={"YOUR_API_KEY"} render={render}>
                 <div ref={ref} />
@@ -303,20 +355,50 @@ const Map = ({projectWork, setProjectWork}) => {
     )   
 }
 
+
+const MarkerModal_Wrapper = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+`
+
 const MarkerInfo = styled.div`
 
     background-color: white;
-    padding: 10px
+    padding: 10px;
+    display: flex;
+    height: 40px;
+    padding: 0 40px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    div{
+        border-radius: 50%;
+        height: 10px;
+        width: 10px;
+
+    }
+`
+const ColoBG = styled.div`
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: black;
+    opacity: 7%;
 `
 
 const Bottom = styled.div`
-    height: 100%;
+    height: 40%;
     // width: 100%;
     // height: 70vh;
     margin: 20px 5vw;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 2px;
-    overflow-y: scroll
+    border-radius: 5px;
+    overflow-y: scroll;
+    box-shadow: rgba(1, 0, 0, 0.44) 0px 3px 8px;
+    border: solid teal 1px;
 
 `
 
@@ -325,9 +407,20 @@ const HideMarkerButton = styled.button`
 `
 
 const AddMarkerModal = styled.div`
-    background-color: red;
+    background-color: white;
     display: flex;
     flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 20;
+
+
+    p{
+        padding: 3px 0;
+        margin: 3px 0;
+    }
+
 
 `
 
@@ -338,28 +431,28 @@ const Div = styled.div`
 `
 
 const MapContainer = styled.div`
-    height: 70vh;
+    height: 60%;
     margin: 20px 5vw;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     .marker{
         background-size: cover;
-        background-color: red;
+        // background-color: red;
         // width: 50px;
         // height: 50px;
         border-radius: 50%;
         cursor: pointer;
-        animation: 1s ease-out 0s 1 slideInFromLeft;
+        // animation: 1s ease-out 0s 1 slideInFromLeft;
     }
 
-    @keyframes slideInFromLeft {
-        0% {
-          opacity: 0%;
-        }
-        100% {
-          opacity: 100%;
-        }
-      }
-      border-radius: 2px;
+    // @keyframes slideInFromLeft {
+    //     0% {
+    //       opacity: 0%;
+    //     }
+    //     100% {
+    //       opacity: 100%;
+    //     }
+    //   }
+    //   border-radius: 2px;
 
 `
 
