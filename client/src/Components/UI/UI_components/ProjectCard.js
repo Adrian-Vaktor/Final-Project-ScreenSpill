@@ -75,6 +75,10 @@ const Button = styled.button`
     border-radius: 3px;
     border: none;
     background-color: white;
+    &&:active{
+        background-color: lime;
+        opacity: 30%;
+    }
 `
 
 const Content = styled.div`
@@ -84,6 +88,7 @@ const Content = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0 25px;
+
 
 `
 
