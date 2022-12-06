@@ -247,6 +247,7 @@ const Header = styled.div`
         left: -40px;
         color: #c5d4cb;
         font-size: 100px;
+        transform: rotate(0deg);
 
         @keyframes example {
             0%   {top: 100px;}

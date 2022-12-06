@@ -117,6 +117,7 @@ const Project_HomePage = () => {
             {/* <LogoutButton></LogoutButton> */}
                 </UIHeader>
                 <BodyContainer>
+                    
                     <UISideBar>
                         <FunctionButton onClick={()=> {handleChooseFunction('script')}}><Edit /></FunctionButton>
                         <FunctionButton onClick={()=> {handleChooseFunction('characters')}}><User /></FunctionButton>

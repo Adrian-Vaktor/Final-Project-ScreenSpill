@@ -551,7 +551,7 @@ const TextArea = styled.div`
     max-height: 90vh;
     padding-bottom: 800px;
     // overflow-x: hidden;
-    // overflow-y: scroll;
+    overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;`
 
 const ScriptWriter_Wrapper = styled.div`
